@@ -65,9 +65,11 @@ namespace WpfCluster
                     cellRect.Height = squareSizeX - 1;
                     cellRect.Fill = rectBrush;
                     cellRect.Name = "box" + i.ToString() + j.ToString();
+                    
+                    canvasField.Children.Add(cellRect);
+
                     Canvas.SetLeft(cellRect, j * squareSizeX);
                     Canvas.SetBottom(cellRect, i * squareSizeY);
-                    canvasField.Children.Add(cellRect);
 
                     rectBrush = new SolidColorBrush(Colors.Black);
                 }               
