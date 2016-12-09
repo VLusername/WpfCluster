@@ -76,7 +76,7 @@ namespace WpfCluster
                     canvasField.Children.Add(cellRect);
                    
                     Canvas.SetLeft(cellRect, j * squareSizeX);
-                    Canvas.SetBottom(cellRect, i * squareSizeY);
+                    Canvas.SetTop(cellRect, i * squareSizeY);
 
                     rectBrush = new SolidColorBrush(Colors.Black);
                 }               
@@ -113,7 +113,7 @@ namespace WpfCluster
                                 canvasField.Children.Add(cellRect);
 
                                 Canvas.SetLeft(cellRect, j * squareSizeX);
-                                Canvas.SetBottom(cellRect, i * squareSizeY);         
+                                Canvas.SetTop(cellRect, i * squareSizeY);         
                             }
                 //System.Threading.Thread.Sleep(50);
 
@@ -147,9 +147,13 @@ namespace WpfCluster
         {
             clearCubeButton.IsEnabled = true;
 
-            //ModelVisual3D light = new ModelVisual3D();
-            //light.Content = new DirectionalLight(Colors.Transparent, new Vector3D(0, 0, 5));
-            //viewportField.Children.Add(light);
+            ModelVisual3D zlight = new ModelVisual3D();
+            zlight.Content = new DirectionalLight(Colors.Transparent, new Vector3D(15, 15, 15));
+            viewportField.Children.Add(zlight);
+
+            ModelVisual3D ylight = new ModelVisual3D();
+            ylight.Content = new DirectionalLight(Colors.Transparent, new Vector3D(-15, -15, -15));
+            viewportField.Children.Add(ylight);
 
             CubeColor = Color.FromRgb(210,10,10);
             CubeBuilder cubeBuilder = new CubeBuilder();

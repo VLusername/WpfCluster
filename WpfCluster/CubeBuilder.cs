@@ -40,7 +40,7 @@ namespace WpfCluster
 
             SolidColorBrush brush = new SolidColorBrush(color);
             brush.Opacity = opacity;
-            Material material = new EmissiveMaterial(brush);
+            Material material = new DiffuseMaterial(brush);
             GeometryModel3D model = new GeometryModel3D(triangleMesh, material);
             Model3DGroup group = new Model3DGroup();
             group.Children.Add(model);
