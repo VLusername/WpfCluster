@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="CubeBuilder.cs" />
     <Compile Include="FindClustersAlgorithm.cs" />
+    <Compile Include="FindClustersAlgorithm3D.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

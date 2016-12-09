@@ -19,32 +19,29 @@ namespace WpfCluster
 
     public class ModelBuilder
     {
-        private Color _color;
-
-        public ModelBuilder(Color color)
+        public ModelBuilder()
         {
-            _color = color;
         }
 
-        public Model3DGroup CreateTriangle(Point3D p0, Point3D p1, Point3D p2, double opacity = 1)
+        public Model3DGroup CreateTriangle(Point3D p0, Point3D p1, Point3D p2, Color color, double opacity = 1)
         {
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions.Add(p0);
-            mesh.Positions.Add(p1);
-            mesh.Positions.Add(p2);
-            mesh.TriangleIndices.Add(0);
-            mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(2);
+            MeshGeometry3D triangleMesh = new MeshGeometry3D();
+            triangleMesh.Positions.Add(p0);
+            triangleMesh.Positions.Add(p1);
+            triangleMesh.Positions.Add(p2);
+            triangleMesh.TriangleIndices.Add(0);
+            triangleMesh.TriangleIndices.Add(1);
+            triangleMesh.TriangleIndices.Add(2);
 
             Vector3D normal = VectorHelper.CalcNormal(p0, p1, p2);
-            mesh.Normals.Add(normal);
-            mesh.Normals.Add(normal);
-            mesh.Normals.Add(normal);
+            triangleMesh.Normals.Add(normal);
+            triangleMesh.Normals.Add(normal);
+            triangleMesh.Normals.Add(normal);
 
-            SolidColorBrush brush = new SolidColorBrush(_color);
+            SolidColorBrush brush = new SolidColorBrush(color);
             brush.Opacity = opacity;
-            Material material = new DiffuseMaterial(brush);
-            GeometryModel3D model = new GeometryModel3D(mesh, material);
+            Material material = new EmissiveMaterial(brush);
+            GeometryModel3D model = new GeometryModel3D(triangleMesh, material);
             Model3DGroup group = new Model3DGroup();
             group.Children.Add(model);
             return group;
@@ -53,18 +50,13 @@ namespace WpfCluster
 
     public class CubeBuilder : ModelBuilder
     {
-        public CubeBuilder(Color color) : base(color)
+        public CubeBuilder()
         {
         }
 
-        public ModelVisual3D Create()
+        public ModelVisual3D Create(int x, int y, int z, Color color, double opacity)
         {
-            return Create(0, 0, 0, 1);
-        }
-
-        public ModelVisual3D Create(int x, int y, int z, double opacity)
-        {
-            Model3DGroup cube = new Model3DGroup();
+            Model3DGroup cubeModel = new Model3DGroup();
 
             Point3D p0 = new Point3D(0 + x, 0 + y, 0 + z);
             Point3D p1 = new Point3D(2 + x, 0 + y, 0 + z);
@@ -76,31 +68,31 @@ namespace WpfCluster
             Point3D p7 = new Point3D(0 + x, 2 + y, 2 + z);
 
             //front
-            cube.Children.Add(CreateTriangle(p3, p2, p6, opacity));
-            cube.Children.Add(CreateTriangle(p3, p6, p7, opacity));
+            cubeModel.Children.Add(CreateTriangle(p3, p2, p6, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p3, p6, p7, color, opacity));
 
             //right
-            cube.Children.Add(CreateTriangle(p2, p1, p5, opacity));
-            cube.Children.Add(CreateTriangle(p2, p5, p6, opacity));
+            cubeModel.Children.Add(CreateTriangle(p2, p1, p5, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p2, p5, p6, color, opacity));
 
             //back
-            cube.Children.Add(CreateTriangle(p1, p0, p4, opacity));
-            cube.Children.Add(CreateTriangle(p1, p4, p5, opacity));
+            cubeModel.Children.Add(CreateTriangle(p1, p0, p4, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p1, p4, p5, color, opacity));
 
             //left
-            cube.Children.Add(CreateTriangle(p0, p3, p7, opacity));
-            cube.Children.Add(CreateTriangle(p0, p7, p4, opacity));
+            cubeModel.Children.Add(CreateTriangle(p0, p3, p7, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p0, p7, p4, color, opacity));
 
             //top
-            cube.Children.Add(CreateTriangle(p7, p6, p5, opacity));
-            cube.Children.Add(CreateTriangle(p7, p5, p4, opacity));
+            cubeModel.Children.Add(CreateTriangle(p7, p6, p5, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p7, p5, p4, color, opacity));
 
             //bottom
-            cube.Children.Add(CreateTriangle(p2, p3, p0, opacity));
-            cube.Children.Add(CreateTriangle(p2, p0, p1, opacity));
+            cubeModel.Children.Add(CreateTriangle(p2, p3, p0, color, opacity));
+            cubeModel.Children.Add(CreateTriangle(p2, p0, p1, color, opacity));
 
             ModelVisual3D model = new ModelVisual3D();
-            model.Content = cube;
+            model.Content = cubeModel;
             return model;
         }
     }

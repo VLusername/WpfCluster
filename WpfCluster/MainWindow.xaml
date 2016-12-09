@@ -12,13 +12,13 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel HorizontalAlignment="Left" Height="108" VerticalAlignment="Top" Width="491">
-            <TextBox x:Name="gridSize" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" Width="71" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
+        <StackPanel HorizontalAlignment="Left" Height="108" VerticalAlignment="Top" Width="254">
+            <TextBox x:Name="gridSize" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="71" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
             <TextBox x:Name="probability" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0,58" VerticalAlignment="Top" Width="71" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
             <CheckBox x:Name="showClusterCount" Content="Show Cluster Count" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
             <CheckBox x:Name="slowMotion" Content="Slow Motion Drawing" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="113" VerticalAlignment="Top" Width="486" Grid.Column="1">
+        <StackPanel Height="113" VerticalAlignment="Top" Margin="254,-2,0,0">
             <Button x:Name="drawButton" Content="Draw" VerticalAlignment="Center" Width="100" Height="25" Margin="0,5,0,0" FontFamily="Jing Jing" Click="drawButton_Click" />
             <Button x:Name="fillButton" Content="Fill" VerticalAlignment="Center" Width="100" Height="25" Margin="0,5,0,0" FontFamily="Jing Jing" Click="fillButton_Click"/>
             <Button x:Name="clearButton" Content="Clear" VerticalAlignment="Center" Width="100" Height="25" Margin="0,5,0,0" FontFamily="Jing Jing" Click="clearButton_Click"/>
@@ -30,14 +30,14 @@
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
-                    <RotateTransform Angle="90"/>
+                    <RotateTransform Angle="180"/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Canvas.RenderTransform>
         </Canvas>
         <Viewport3D x:Name="viewportField" ClipToBounds="True" Grid.Column="1" Grid.Row="1">
             <Viewport3D.Camera>
-                <PerspectiveCamera x:Name="mCamera" Position="10,10,60" LookDirection="-1,-1,-8" UpDirection="0,1,0"
+                <PerspectiveCamera x:Name="mainCamera" UpDirection="0,1,0"
 					FarPlaneDistance="150" NearPlaneDistance="1" FieldOfView="100" >
                     <PerspectiveCamera.Transform>
                         <Transform3DGroup>
@@ -60,11 +60,16 @@
                     </PerspectiveCamera.Transform>
                 </PerspectiveCamera>
             </Viewport3D.Camera>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Color="Transparent" Direction="-3,-4,-5" />
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
         </Viewport3D>
+        <StackPanel HorizontalAlignment="Left" Height="113" VerticalAlignment="Top" Width="259" Grid.Column="1" Margin="0,-2,0,0">
+            <TextBox x:Name="cubeSize" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="71" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
+            <TextBox x:Name="cubeProbability" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0,58" VerticalAlignment="Top" Width="71" Margin="10,5,0,0" FontFamily="Jing Jing" FontWeight="Thin"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="113" VerticalAlignment="Top" Width="237" Margin="259,-2,0,0" Grid.Column="1">
+            <Button x:Name="drawCubeButton" Content="Draw" VerticalAlignment="Center" Width="100" Height="25" Margin="0,5,0,0" FontFamily="Jing Jing" Click="drawCubeButton_Click" HorizontalAlignment="Center" />
+            <Button x:Name="clearCubeButton" Content="Clear" VerticalAlignment="Center" Width="100" Height="25" Margin="0,5,0,0" FontFamily="Jing Jing" Click="clearCubeButton_Click" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <Label Content="Cube (matrix) size" HorizontalAlignment="Left" Margin="90,4,0,0" VerticalAlignment="Top" Width="206" FontFamily="Jing Jing" FontWeight="Thin" Height="30" Grid.Column="1"/>
+        <Label Content="Cube cells probability" HorizontalAlignment="Left" Margin="90,30,0,0" VerticalAlignment="Top" Width="206" FontFamily="Jing Jing" FontWeight="Thin" Height="30" Grid.Column="1"/>
     </Grid>
 </Window>
