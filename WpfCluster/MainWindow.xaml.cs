@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
@@ -24,6 +25,7 @@ namespace WpfCluster
         private FindClustersAlgorithm findClustersObj;
         private FindClustersAlgorithm3D findClustersObj3D;
 
+        private int allClusters;
         private List<int> percolationClusters;
         private double mousePositionX = 0, mousePositionY = 0;
 
@@ -50,7 +52,7 @@ namespace WpfCluster
 
             findClustersObj = new FindClustersAlgorithm(gridSize, probability);
             findClustersObj.HoshenKopelmanAlgorithm();
-            int totalClusters = findClustersObj.RelabledGrid();
+            this.allClusters = findClustersObj.RelabledGrid();
             this.percolationClusters = findClustersObj.FindPercolationClusters();
 
             SolidColorBrush rectBrush = new SolidColorBrush(Colors.Black);
@@ -87,42 +89,49 @@ namespace WpfCluster
 
         private void fillButton_Click(object sender, RoutedEventArgs e)
         {
-            SolidColorBrush rectBrush = new SolidColorBrush(Colors.CornflowerBlue);
-
+            SolidColorBrush rectBrush = new SolidColorBrush(Colors.White);           
             int[,] grid = this.findClustersObj.grid;
 
-            int squareSizeX = (int)(this.canvasField.Width / grid.GetLength(0));
-            int squareSizeY = (int)(this.canvasField.Height / grid.GetLength(1));
+            // enumerator, which supports a simple iteration over a collection of a specified type
+            IEnumerable<Rectangle> rectangles = canvasField.Children.OfType<Rectangle>();
 
             int filledRowCells = 0;
+            //ColorAnimation colorAnimation = new ColorAnimation();
+            //colorAnimation.To = Colors.CornflowerBlue;
+            //colorAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
+            //colorAnimation.FillBehavior = FillBehavior.HoldEnd;
+
+            List<int> firstRowClusters = new List<int>();
+            for (int i = 0; i < grid.GetLength(0); i++)
+                if (grid[0, i] != 0)
+                    firstRowClusters.Add(grid[0, i]);
+
+            ColorAnimation colorAnimation = new ColorAnimation(
+                Colors.White,
+                Colors.CornflowerBlue,
+                TimeSpan.FromMilliseconds(500));
+
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 filledRowCells = 0;
+                
+                TimeSpan totalDuration = TimeSpan.Zero;
                 for (int j = 0; j < grid.GetLength(1); j++)
-                    for (int k = 0; k < grid.GetLength(1); k++)
-                        if (grid[0, k] != 0)
-                            if (grid[i, j] == grid[0, k])
-                            {
-                                filledRowCells++;
-                                Rectangle cellRect = new Rectangle();
-                                cellRect.Width = squareSizeY - 1;
-                                cellRect.Height = squareSizeX - 1;
-                                cellRect.Fill = rectBrush;
-                                cellRect.Name = "box" + i.ToString() + j.ToString();
+                {
+                    if (grid[i, j] != 0 && firstRowClusters.Contains(grid[i, j]))
+                    {
+                        // fill only that cluster which start on first row
+                        filledRowCells++;
 
-                                canvasField.Children.Add(cellRect);
-
-                                Canvas.SetLeft(cellRect, j * squareSizeX);
-                                Canvas.SetTop(cellRect, i * squareSizeY);         
-                            }
-                //System.Threading.Thread.Sleep(50);
-
-                /**
-                 * if entire row was not filled - stop filling
-                 */
+                        Rectangle rect = rectangles.ElementAt(j + i * grid.GetLength(0));
+                        rect.Fill = rectBrush;
+                        rectBrush.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimation);
+                    }
+                }                            
+                // if entire row was not filled - stop filling
                 if (filledRowCells == 0)
                     break;
-            }          
+            }     
         }
 
         private void clearButton_Click(object sender, RoutedEventArgs e)
@@ -167,10 +176,10 @@ namespace WpfCluster
             findClustersObj3D.Relabled3DGrid();
             int[, ,] grid = this.findClustersObj3D.threeDgrid;
 
-            int zCameraCoor = grid.GetLength(0) * 3 + 10;
+            int cameraCoor = grid.GetLength(0) * 3 + 10;
 
-            mainCamera.Position = new Point3D(0, 0, zCameraCoor);
-            mainCamera.LookDirection = new Vector3D(0, 0, 0 - zCameraCoor);      
+            mainCamera.Position = new Point3D(-cameraCoor, 0, 0);
+            mainCamera.LookDirection = new Vector3D(0 + cameraCoor, 0, 0);      
 
             for (int i = 0; i < grid.GetLength(0); i++)
                 for (int j = 0; j < grid.GetLength(1); j++)

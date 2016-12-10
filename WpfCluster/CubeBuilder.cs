@@ -30,8 +30,8 @@ namespace WpfCluster
             triangleMesh.Positions.Add(p1);
             triangleMesh.Positions.Add(p2);
             triangleMesh.TriangleIndices.Add(0);
-            triangleMesh.TriangleIndices.Add(1);
             triangleMesh.TriangleIndices.Add(2);
+            triangleMesh.TriangleIndices.Add(1);
 
             Vector3D normal = VectorHelper.CalcNormal(p0, p1, p2);
             triangleMesh.Normals.Add(normal);

@@ -15,9 +15,9 @@
         <DockPanel Grid.Column="0">
             <StackPanel>
                 <Label Content="Grid (matrix) size" FontFamily="Jing Jing"/>
-                <TextBox x:Name="gridSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="20" FontFamily="Jing Jing"/>
+                <TextBox x:Name="gridSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="20" FontFamily="Jing Jing" MaxLength="3"/>
                 <Label Content="Grid cells probability" FontFamily="Jing Jing"/>
-                <TextBox x:Name="probability" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0,58" FontFamily="Jing Jing"/>
+                <TextBox x:Name="probability" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0,58" FontFamily="Jing Jing" MaxLength="5"/>
             </StackPanel>
             <StackPanel>
                 <CheckBox x:Name="showClusterCount" Content="Show Cluster Count" FontFamily="Jing Jing"/>
@@ -32,9 +32,9 @@
         <DockPanel Grid.Column="1">
             <StackPanel>
                 <Label Content="Cube (matrix) size" FontFamily="Jing Jing" FontWeight="Thin" Grid.Column="1"/>
-                <TextBox x:Name="cubeSize" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="6" FontFamily="Jing Jing"/>
+                <TextBox x:Name="cubeSize" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="6" FontFamily="Jing Jing" MaxLength="2"/>
                 <Label Content="Cube cells probability" FontFamily="Jing Jing" FontWeight="Thin" Height="30" Grid.Column="1"/>
-                <TextBox x:Name="cubeProbability" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0,58" FontFamily="Jing Jing"/>
+                <TextBox x:Name="cubeProbability" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="0,58" FontFamily="Jing Jing" MaxLength="5"/>
             </StackPanel>
             <StackPanel>
                 <Button x:Name="drawCubeButton" Content="Draw" VerticalAlignment="Center" Margin="0,5,0,0" FontFamily="Jing Jing" Click="drawCubeButton_Click" HorizontalAlignment="Center"/>
