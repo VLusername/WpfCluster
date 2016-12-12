@@ -50,50 +50,50 @@ namespace WpfCluster
 
     public class CubeBuilder : ModelBuilder
     {
-        public CubeBuilder()
+        public int cubeSize;
+
+        public CubeBuilder(int size)
         {
+            this.cubeSize = size;
         }
 
         public ModelVisual3D Create(int x, int y, int z, Color color, double opacity)
         {
-            Model3DGroup cubeModel = new Model3DGroup();
+            Model3DGroup cubeModelGroup = new Model3DGroup();
 
             Point3D p0 = new Point3D(0 + x, 0 + y, 0 + z);
-            Point3D p1 = new Point3D(2 + x, 0 + y, 0 + z);
-            Point3D p2 = new Point3D(2 + x, 0 + y, 2 + z);
-            Point3D p3 = new Point3D(0 + x, 0 + y, 2 + z);
-            Point3D p4 = new Point3D(0 + x, 2 + y, 0 + z);
-            Point3D p5 = new Point3D(2 + x, 2 + y, 0 + z);
-            Point3D p6 = new Point3D(2 + x, 2 + y, 2 + z);
-            Point3D p7 = new Point3D(0 + x, 2 + y, 2 + z);
+            Point3D p1 = new Point3D(this.cubeSize + x, 0 + y, 0 + z);
+            Point3D p2 = new Point3D(this.cubeSize + x, 0 + y, this.cubeSize + z);
+            Point3D p3 = new Point3D(0 + x, 0 + y, this.cubeSize + z);
+            Point3D p4 = new Point3D(0 + x, this.cubeSize + y, 0 + z);
+            Point3D p5 = new Point3D(this.cubeSize + x, this.cubeSize + y, 0 + z);
+            Point3D p6 = new Point3D(this.cubeSize + x, this.cubeSize + y, this.cubeSize + z);
+            Point3D p7 = new Point3D(0 + x, this.cubeSize + y, this.cubeSize + z);
 
-            //front
-            cubeModel.Children.Add(CreateTriangle(p3, p2, p6, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p3, p6, p7, color, opacity));
+            // front cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p3, p2, p6, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p3, p6, p7, color, opacity));
+            //back cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p1, p0, p4, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p1, p4, p5, color, opacity));
 
-            //right
-            cubeModel.Children.Add(CreateTriangle(p2, p1, p5, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p2, p5, p6, color, opacity));
+            //left cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p0, p3, p7, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p0, p7, p4, color, opacity));
+            //right cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p2, p1, p5, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p2, p5, p6, color, opacity));
 
-            //back
-            cubeModel.Children.Add(CreateTriangle(p1, p0, p4, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p1, p4, p5, color, opacity));
+            //top cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p7, p6, p5, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p7, p5, p4, color, opacity));
+            //bottom cube side
+            cubeModelGroup.Children.Add(CreateTriangle(p2, p3, p0, color, opacity));
+            cubeModelGroup.Children.Add(CreateTriangle(p2, p0, p1, color, opacity));
 
-            //left
-            cubeModel.Children.Add(CreateTriangle(p0, p3, p7, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p0, p7, p4, color, opacity));
-
-            //top
-            cubeModel.Children.Add(CreateTriangle(p7, p6, p5, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p7, p5, p4, color, opacity));
-
-            //bottom
-            cubeModel.Children.Add(CreateTriangle(p2, p3, p0, color, opacity));
-            cubeModel.Children.Add(CreateTriangle(p2, p0, p1, color, opacity));
-
-            ModelVisual3D model = new ModelVisual3D();
-            model.Content = cubeModel;
-            return model;
+            ModelVisual3D cubeModel3D = new ModelVisual3D();
+            cubeModel3D.Content = cubeModelGroup;
+            return cubeModel3D;
         }
     }
 }

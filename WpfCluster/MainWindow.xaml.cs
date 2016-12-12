@@ -22,20 +22,17 @@ namespace WpfCluster
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FindClustersAlgorithm findClustersObj;
-        private FindClustersAlgorithm3D findClustersObj3D;
+        public DrawCluster drawClusterObj;
+        public DrawCluster3D drawClusterObj3D;
 
-        private int allClusters;
-        private List<int> percolationClusters;
         private double mousePositionX = 0, mousePositionY = 0;
-
-        public Color CubeColor { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             fillButton.IsEnabled = false;
             clearButton.IsEnabled = false;
+            fillCubeButton.IsEnabled = false;
             clearCubeButton.IsEnabled = false;
         }
 
@@ -50,88 +47,13 @@ namespace WpfCluster
             int gridSize = Convert.ToInt32(this.gridSize.Text);
             double probability = Convert.ToDouble(this.probability.Text);
 
-            findClustersObj = new FindClustersAlgorithm(gridSize, probability);
-            findClustersObj.HoshenKopelmanAlgorithm();
-            this.allClusters = findClustersObj.RelabledGrid();
-            this.percolationClusters = findClustersObj.FindPercolationClusters();
-
-            SolidColorBrush rectBrush = new SolidColorBrush(Colors.Black);
-
-            int[,] grid = this.findClustersObj.grid;
-
-            int squareSizeX = (int)(this.canvasField.Width / grid.GetLength(0));
-            int squareSizeY = (int)(this.canvasField.Height / grid.GetLength(1));         
-
-            for (int i = 0; i < grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < grid.GetLength(1); j++)
-                {
-                    if (grid[i, j] != 0)
-                        rectBrush = new SolidColorBrush(Colors.White);
-
-                    Rectangle cellRect = new Rectangle();
-                    cellRect.Width = squareSizeY - 1;
-                    cellRect.Height = squareSizeX - 1;
-                    cellRect.Fill = rectBrush;
-                    cellRect.Name = "box" + i.ToString() + j.ToString();
-                    
-                    canvasField.Children.Add(cellRect);
-                   
-                    Canvas.SetLeft(cellRect, j * squareSizeX);
-                    Canvas.SetTop(cellRect, i * squareSizeY);
-
-                    rectBrush = new SolidColorBrush(Colors.Black);
-                }               
-                if (this.slowMotion.IsChecked == true)
-                    System.Threading.Thread.Sleep(50);
-            }
+            drawClusterObj = new DrawCluster(gridSize, probability);
+            drawClusterObj.DrawGrid(canvasField);
         }
 
         private void fillButton_Click(object sender, RoutedEventArgs e)
         {
-            SolidColorBrush rectBrush = new SolidColorBrush(Colors.White);           
-            int[,] grid = this.findClustersObj.grid;
-
-            // enumerator, which supports a simple iteration over a collection of a specified type
-            IEnumerable<Rectangle> rectangles = canvasField.Children.OfType<Rectangle>();
-
-            int filledRowCells = 0;
-            //ColorAnimation colorAnimation = new ColorAnimation();
-            //colorAnimation.To = Colors.CornflowerBlue;
-            //colorAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(2000));
-            //colorAnimation.FillBehavior = FillBehavior.HoldEnd;
-
-            List<int> firstRowClusters = new List<int>();
-            for (int i = 0; i < grid.GetLength(0); i++)
-                if (grid[0, i] != 0)
-                    firstRowClusters.Add(grid[0, i]);
-
-            ColorAnimation colorAnimation = new ColorAnimation(
-                Colors.White,
-                Colors.CornflowerBlue,
-                TimeSpan.FromMilliseconds(500));
-
-            for (int i = 0; i < grid.GetLength(0); i++)
-            {
-                filledRowCells = 0;
-                
-                TimeSpan totalDuration = TimeSpan.Zero;
-                for (int j = 0; j < grid.GetLength(1); j++)
-                {
-                    if (grid[i, j] != 0 && firstRowClusters.Contains(grid[i, j]))
-                    {
-                        // fill only that cluster which start on first row
-                        filledRowCells++;
-
-                        Rectangle rect = rectangles.ElementAt(j + i * grid.GetLength(0));
-                        rect.Fill = rectBrush;
-                        rectBrush.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimation);
-                    }
-                }                            
-                // if entire row was not filled - stop filling
-                if (filledRowCells == 0)
-                    break;
-            }     
+            drawClusterObj.FillGrid(canvasField);
         }
 
         private void clearButton_Click(object sender, RoutedEventArgs e)
@@ -143,69 +65,28 @@ namespace WpfCluster
 
         private void drawCubeButton_Click(object sender, RoutedEventArgs e)
         {
-            RenderCube();
-        }
-
-        private void clearCubeButton_Click(object sender, RoutedEventArgs e)
-        {
-            clearCubeButton.IsEnabled = false;
-            viewportField.Children.Clear();
-        }
-
-        public void RenderCube()
-        {
+            fillCubeButton.IsEnabled = true;
             clearCubeButton.IsEnabled = true;
 
-            ModelVisual3D zlight = new ModelVisual3D();
-            zlight.Content = new DirectionalLight(Colors.Transparent, new Vector3D(15, 15, 15));
-            viewportField.Children.Add(zlight);
-
-            ModelVisual3D ylight = new ModelVisual3D();
-            ylight.Content = new DirectionalLight(Colors.Transparent, new Vector3D(-15, -15, -15));
-            viewportField.Children.Add(ylight);
-
-            CubeColor = Color.FromRgb(210,10,10);
-            CubeBuilder cubeBuilder = new CubeBuilder();
-            double opacity = 1;
+            // TODO: input validation
 
             int cubeSize = Convert.ToInt32(this.cubeSize.Text);
             double cubeProbability = Convert.ToDouble(this.cubeProbability.Text);
 
-            findClustersObj3D = new FindClustersAlgorithm3D(cubeSize, cubeProbability);
-            findClustersObj3D.HoshenKopelmanAlgorithm3D();
-            findClustersObj3D.Relabled3DGrid();
-            int[, ,] grid = this.findClustersObj3D.threeDgrid;
+            drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
+            drawClusterObj3D.DrawCube(viewportField, mainCamera, 4);
+        }
 
-            int cameraCoor = grid.GetLength(0) * 3 + 10;
+        private void fillCubeButton_Click(object sender, RoutedEventArgs e)
+        {
+            drawClusterObj3D.FillCube(viewportField);
+        }
 
-            mainCamera.Position = new Point3D(-cameraCoor, 0, 0);
-            mainCamera.LookDirection = new Vector3D(0 + cameraCoor, 0, 0);      
-
-            for (int i = 0; i < grid.GetLength(0); i++)
-                for (int j = 0; j < grid.GetLength(1); j++)
-                    for (int k = 0; k < grid.GetLength(2); k++)
-                    {
-                        if (i == 0)
-                        {
-                            CubeColor = Color.FromRgb(10, 10, 210);
-                        }
-                        if (j == 0)
-                        {
-                            CubeColor = Color.FromRgb(10, 210, 10);
-                        }
-
-                        int zCenter = i * 3 - (int)(grid.GetLength(0) / 2 * 3);
-                        int yCenter = j * 3 - (int)(grid.GetLength(1) / 2 * 3);
-                        int xCenter = k * 3 - (int)(grid.GetLength(2) / 2 * 3);
-
-                        opacity = (grid[i, j, k] != 0) ? 1 : 0.3;
-                        viewportField.Children.Add(cubeBuilder.Create(zCenter, yCenter, xCenter, CubeColor, opacity));
-                        
-                        CubeColor = Color.FromRgb(210,10,10);
-
-                        //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
-                    }             
-
+        private void clearCubeButton_Click(object sender, RoutedEventArgs e)
+        {
+            fillCubeButton.IsEnabled = false;
+            clearCubeButton.IsEnabled = false;
+            viewportField.Children.Clear();
         }
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
@@ -242,12 +123,12 @@ namespace WpfCluster
                 {
                     case 1:
                         {
-                            rotX.Angle += 1;
+                            rotZ.Angle += 1;
                             break;
                         }
                     case -1:
                         {
-                            rotX.Angle -= 1;
+                            rotZ.Angle -= 1;
                             break;
                         }
                 }
@@ -258,9 +139,9 @@ namespace WpfCluster
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             mainCamera.Position = new Point3D(
-                mainCamera.Position.X,
+                mainCamera.Position.X + e.Delta / 150D,
                 mainCamera.Position.Y,
-                mainCamera.Position.Z - e.Delta / 150D);
+                mainCamera.Position.Z);
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

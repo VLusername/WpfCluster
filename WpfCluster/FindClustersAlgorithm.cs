@@ -6,12 +6,23 @@ using System.Threading.Tasks;
 
 namespace WpfCluster
 {
+    /// <summary>
+    /// Implementation of Hoshen-Kopelman algorithm
+    /// </summary>
     public class FindClustersAlgorithm
     {
-        public int[,] grid;
-        public int[] labels;
-        public int totalClusters = 0;
+        private int[] labels;
 
+        protected int[,] grid;
+
+        protected int allClusters;
+        protected List<int> percolationClusters;
+
+        /// <summary>
+        /// Constructor. Initialize grid and labels array
+        /// </summary>
+        /// <param name="size">Dimension size for square grid</param>
+        /// <param name="probability">Probability for random fill cells of grid/param>
         public FindClustersAlgorithm(int size, double probability)
         {
             this.grid = new int[size, size];
@@ -24,40 +35,62 @@ namespace WpfCluster
                     this.grid[i, j] = (randObj.NextDouble() < probability) ? 1 : 0;
         }
 
-        public int SetNewCluster()
+        /// <summary>
+        /// Add new cluster label (init new set for Union-Find algorithm)
+        /// </summary>
+        /// <returns>Set representative</returns>
+        private int SetNewCluster()
         {
             this.labels[0]++;
-
-            //TODO: if (this.labels[0] < this.labels.Length)
-
             this.labels[labels[0]] = this.labels[0];
             return this.labels[0];
         }
 
-        public int FindRoot(int x)
+        /// <summary>
+        /// Find the root of tree for element
+        /// </summary>
+        /// <remarks>
+        /// Return the same element if it is the root of tree.
+        /// Else find the root recursive if element parent is not a root
+        /// </remarks>
+        /// <param name="elem">Element value</param>
+        /// <returns>Tree root</returns>
+        private int FindRoot(int elem)
         {
             // if x is root of tree
-            if (this.labels[x] == x) return x;
+            if (this.labels[elem] == elem) return elem;
 
-            // else find root of x parent until x root will be found
-            return this.labels[x] = FindRoot(this.labels[x]);
+            // else find root of element parent until root will be found
+            return this.labels[elem] = FindRoot(this.labels[elem]);
         }
 
-        public int Union(int x, int y)
+        /// <summary>
+        /// Сombining the two sets (two clusters) in one (with common root)
+        /// </summary>
+        /// <remarks>
+        /// This function using random choosing root according to the second heuristics of Union-Find
+        /// </remarks>
+        /// <param name="firstElement">First element for union</param>
+        /// <param name="secondElement">Second element for union</param>
+        /// <returns>Union set representative</returns>
+        private int Union(int firstElement, int secondElement)
         {
-            int xRoot = this.FindRoot(x);
-            int yRoot= this.FindRoot(y);
+            int firstRoot = this.FindRoot(firstElement);
+            int secondRoot= this.FindRoot(secondElement);
 
             // random choosing root of new union tree
             if (new Random().Next() % 2 == 0)
             {
-                return this.labels[yRoot] = xRoot;
+                return this.labels[secondRoot] = firstRoot;
             }
 
-            return this.labels[xRoot] = yRoot;         
+            return this.labels[firstRoot] = secondRoot;         
         }
 
-        public void HoshenKopelmanAlgorithm()
+        /// <summary>
+        /// Main HK-algorithm method. Scan the grid and set marks to each free cell
+        /// </summary>
+        protected void HoshenKopelmanAlgorithm()
         {
             for (int i = 0; i < this.grid.GetLength(0); i++)
                 for (int j = 0; j < this.grid.GetLength(1); j++)
@@ -79,9 +112,20 @@ namespace WpfCluster
                             this.grid[i, j] = this.Union(up, left);
                         }
                     }
+
+            this.RelabledGrid();
+            this.FindPercolationClusters();
         }
 
-        public int RelabledGrid()
+        /// <summary>
+        /// Trick method. Relabed grid from 1 to N clusers instead their current numbers
+        /// </summary>
+        /// <remarks>
+        /// After scanning grid we may have numbers like 3, 5, 6.
+        /// This method change them to 1, 2, 3.
+        /// Doing this operation after scanning get less time than relabled during scanning
+        /// </remarks>
+        private void RelabledGrid()
         {
             int[] newLabels = new int[this.labels.Length];
 
@@ -97,22 +141,26 @@ namespace WpfCluster
                         }
                         this.grid[i, j] = newLabels[x];
                     }
-
-            return newLabels[0];
+            this.allClusters = newLabels[0];
         }
 
-        public List<int> FindPercolationClusters()
+        /// <summary>
+        /// Check there are any percolation clusters in all found clusters
+        /// </summary>
+        /// <remarks>
+        /// Percolation clusters is the cluster that starts in first row and ends in last
+        /// </remarks>
+        protected void FindPercolationClusters()
         {
-            List<int> foundClusters = new List<int>();
+            this.percolationClusters = new List<int>();
 
             for (int i = 0; i < this.grid.GetLength(0); i++)
                 for (int j = 0; j < this.grid.GetLength(1); j++)
-                    if (this.grid[0, i] != 0 && !foundClusters.Contains(this.grid[0, i]) && this.grid[0, i] == this.grid[this.grid.GetLength(1) - 1, j])
+                    if (this.grid[0, i] != 0 && !this.percolationClusters.Contains(this.grid[0, i]) && this.grid[0, i] == this.grid[this.grid.GetLength(1) - 1, j])
                     {
-                        foundClusters.Add(grid[0, i]);
+                        this.percolationClusters.Add(grid[0, i]);
                         break;
                     }
-            return foundClusters;
         }
     }
 }

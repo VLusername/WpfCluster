@@ -21,7 +21,6 @@
             </StackPanel>
             <StackPanel>
                 <CheckBox x:Name="showClusterCount" Content="Show Cluster Count" FontFamily="Jing Jing"/>
-                <CheckBox x:Name="slowMotion" Content="Slow Motion Drawing" FontFamily="Jing Jing"/>
             </StackPanel>
             <StackPanel>
                 <Button x:Name="drawButton" Content="Draw" VerticalAlignment="Center" Margin="0,5,0,0" FontFamily="Jing Jing" Click="drawButton_Click" HorizontalAlignment="Center"/>
@@ -38,6 +37,7 @@
             </StackPanel>
             <StackPanel>
                 <Button x:Name="drawCubeButton" Content="Draw" VerticalAlignment="Center" Margin="0,5,0,0" FontFamily="Jing Jing" Click="drawCubeButton_Click" HorizontalAlignment="Center"/>
+                <Button x:Name="fillCubeButton" Content="Fill" VerticalAlignment="Center" Margin="0,5,0,0" FontFamily="Jing Jing" Click="fillCubeButton_Click" HorizontalAlignment="Center"/>
                 <Button x:Name="clearCubeButton" Content="Clear" VerticalAlignment="Center" Margin="0,5,0,0" FontFamily="Jing Jing" Click="clearCubeButton_Click" HorizontalAlignment="Center"/>
             </StackPanel>
         </DockPanel>
