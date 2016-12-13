@@ -17,6 +17,7 @@ namespace WpfCluster
 
         protected int allClusters;
         public List<int> percolationClusters;
+        public bool lightCheckResult;
 
         /// <summary>
         /// Constructor. Initialize grid and labels array
@@ -90,7 +91,8 @@ namespace WpfCluster
         /// <summary>
         /// Main HK-algorithm method. Scan the grid and set marks to each free cell
         /// </summary>
-        public void HoshenKopelmanAlgorithm()
+        /// <param name="lightVersion">Set true for building diagram (light version does not do relabel operation)</param>
+        public void HoshenKopelmanAlgorithm(bool lightVersion = false)
         {
             for (int i = 0; i < this.grid.GetLength(0); i++)
                 for (int j = 0; j < this.grid.GetLength(1); j++)
@@ -113,8 +115,15 @@ namespace WpfCluster
                         }
                     }
 
-            this.RelabledGrid();
-            this.FindPercolationClusters();
+            if (lightVersion)
+            {
+                this.FindPercolationClustersLight();
+            }
+            else
+            {
+                this.RelabledGrid();
+                this.FindPercolationClusters();
+            }
         }
 
         /// <summary>
@@ -148,7 +157,7 @@ namespace WpfCluster
         /// Check there are any percolation clusters in all found clusters
         /// </summary>
         /// <remarks>
-        /// Percolation clusters is the cluster that starts in first row and ends in last
+        /// Percolation cluster is the cluster that starts in first row and ends in last
         /// </remarks>
         protected void FindPercolationClusters()
         {
@@ -161,6 +170,24 @@ namespace WpfCluster
                         this.percolationClusters.Add(grid[0, i]);
                         break;
                     }
+        }
+
+        /// <summary>
+        /// Check if at least ONE percolation clusters in the grid
+        /// </summary>
+        /// <remarks>
+        /// Percolation cluster is the cluster that starts in first row and ends in last
+        /// </remarks>
+        protected void FindPercolationClustersLight()
+        {
+            for (int i = 0; i < this.grid.GetLength(0); i++)
+                for (int j = 0; j < this.grid.GetLength(1); j++)
+                    if (this.grid[0, i] != 0 && this.FindRoot(this.grid[0, i]) == this.FindRoot(this.grid[this.grid.GetLength(1) - 1, j]))
+                    {
+                        this.lightCheckResult = true;
+                        return;
+                    }
+            this.lightCheckResult = false;
         }
     }
 }

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WpfCluster.MainWindow"
         Title="" Height="600" Width="800" FontFamily="Jing Jing" Background="WhiteSmoke" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseRightButtonDown="Window_MouseRightButtonDown" Icon="icon.ico" MinWidth="500" MinHeight="570">
     <Grid x:Name="mainGrid">
-        <TabControl FontFamily="Jing Jing" Margin="10" Background="#FFF9F9F9" HorizontalContentAlignment="Center">
-            <TabItem Header="Clusters">
+        <TabControl FontFamily="Jing Jing" Margin="10" Background="#FFF9F9F9" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem x:Name="firstTab" Header="Clusters">
                 <Grid x:Name="firstPageGrid" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.5*"/>
@@ -83,33 +83,37 @@
                     </Viewport3D>
                 </Grid>
             </TabItem>
-            <TabItem Header="Diagram">
+            <TabItem x:Name="secondTab" Header="Diagram">
                 <Grid x:Name="secondPageGrid" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.3*"/>
-                        <RowDefinition Height="1.7*"/>
+                        <RowDefinition Height="1.6*"/>
+                        <RowDefinition Height="0.1*"/>
                     </Grid.RowDefinitions>
-                    <DockPanel Grid.Row="0" HorizontalAlignment="Center">
-                        <WrapPanel HorizontalAlignment="Center">
-                            <StackPanel>
-                                <Button x:Name="drawGraphic" Content="Draw" Margin="5" Click="drawGraphic_Click" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </WrapPanel>
+                    <DockPanel Grid.Row="0" HorizontalAlignment="Center">                        
                         <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox x:Name="operationCount" Text="100" MinWidth="35" MaxHeight="23" MaxLength="3"/>
                                 <Label Content="Operation count for one point"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="experimentalGridSize" Text="20" MinWidth="35" MaxHeight="23" MaxLength="3"/>
-                                <Label Content="Experimental grid size"/>
+                            <StackPanel>
+                                <Button x:Name="drawGraphic" Content="Draw" Margin="4" Click="drawGraphic_Click" HorizontalAlignment="Center"/>
                             </StackPanel>
-                        </WrapPanel>                                               
+                        </WrapPanel>
                     </DockPanel>
                     <Viewbox Grid.Row="1">
                         <Canvas x:Name="graphicCanvasField" Width="500" Height="500">
                         </Canvas>
                     </Viewbox>
+                    <DockPanel Grid.Row="2" HorizontalAlignment="Center">                       
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Grid size (N): 30" Foreground="Red"/>
+                                <Label Content="Grid size (N): 50" Foreground="Green"/>
+                                <Label Content="Grid size (N): 70" Foreground="Blue"/>
+                            </StackPanel>
+                        </WrapPanel>
+                    </DockPanel>
                 </Grid>
             </TabItem>
         </TabControl>

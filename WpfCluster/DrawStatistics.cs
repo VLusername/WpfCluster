@@ -16,19 +16,19 @@ namespace WpfCluster
         private static int stepsCount = 6;
         private static int markSize = 10;
         private int operationsPerPoint;
-        private int gridSize;
             
-        public DrawStatistics(int operationsPerPoint, int gridSize)
+        public DrawStatistics(int operationsPerPoint)
         {
             this.operationsPerPoint = operationsPerPoint;
-            this.gridSize = gridSize;
         }
 
         public void DrawCoordinates(Canvas canvas)
         {
             canvas.Children.Clear();
 
-            GeometryGroup linesGroup = new GeometryGroup();          
+            GeometryGroup linesGroup = new GeometryGroup();
+            TextBlock textBlock = new TextBlock();
+            double yText = 0, xText = 0.4;
 
             Point xLineStart = new Point(0, canvas.Height - margin);
             Point xLineEnd = new Point(canvas.Width, canvas.Height - margin);           
@@ -40,7 +40,12 @@ namespace WpfCluster
                 Point xMarkStart = new Point(xCoord, canvas.Height - margin);
                 Point xMarkEnd = new Point(xCoord, canvas.Height - margin + markSize);
                 linesGroup.Children.Add(new LineGeometry(xMarkStart, xMarkEnd));
+
+                xText += 0.05;
+                canvas.Children.Add(this.DrawTextMark(xText.ToString(), xCoord - markSize, canvas.Height - 25));
             }
+            canvas.Children.Add(this.DrawTextMark("P", canvas.Width, canvas.Height - margin));
+
 
             Point yLineStart = new Point(margin, 0);
             Point yLineEnd = new Point(margin, canvas.Height);
@@ -52,7 +57,14 @@ namespace WpfCluster
                 Point yMarkStart = new Point(0 + margin - markSize, yCoord);
                 Point yMarkEnd = new Point(0 + margin, yCoord);
                 linesGroup.Children.Add(new LineGeometry(yMarkStart, yMarkEnd));
+
+                if (yText < 1)
+                {
+                    yText += 0.2;
+                    canvas.Children.Add(this.DrawTextMark(yText.ToString(), 0, yCoord - 15));
+                }
             }
+            canvas.Children.Add(this.DrawTextMark("M/N", 0, 0));
 
             Path linePath = new Path();
             linePath.StrokeThickness = 3;
@@ -64,40 +76,59 @@ namespace WpfCluster
 
         public void DrawExperimentData(Canvas canvas)
         {
+            this.DrawCoordinates(canvas);
+
             FindClustersAlgorithm findClusterObj;
             PointCollection points = new PointCollection();
-            
+            Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
+            int currentBrush = 0;
+
             // TODO: input scale step, remove hardcode
 
-            double probabilityStep = 0.025;
+            double probabilityStep = 0.05;
 
-            for (double probability = 0.4; probability < 0.8; probability += probabilityStep)
+            for (int gridSize = 30; gridSize <= 70; gridSize += 20)
             {
-                int countPercolationClusters = 0;
-                for (int j = 0; j < this.operationsPerPoint; j++)
+                points = new PointCollection();
+                for (double probability = 0.4; probability < 0.8; probability += probabilityStep)
                 {
-                    findClusterObj = new FindClustersAlgorithm(this.gridSize, probability);
-                    findClusterObj.HoshenKopelmanAlgorithm();
+                    int countPercolationClusters = 0;
+                    for (int j = 0; j < this.operationsPerPoint; j++)
+                    {
+                        findClusterObj = new FindClustersAlgorithm(gridSize, probability);
+                        findClusterObj.HoshenKopelmanAlgorithm(true);
 
-                    if (findClusterObj.percolationClusters.Count > 0)
-                        countPercolationClusters++;
+                        if (findClusterObj.lightCheckResult)
+                            countPercolationClusters++;
+                    }
+
+                    double xPixelStepSize = (canvas.Width - 2 * margin) / ((0.8 - 0.4) / probabilityStep);
+                    double yPixelStepSize = (canvas.Height - 2 * margin) / 100;
+
+                    double x = margin + ((probability - 0.4) / probabilityStep) * xPixelStepSize;
+                    double y = canvas.Height - margin - yPixelStepSize * (((double)countPercolationClusters / this.operationsPerPoint) * 100);
+
+                    points.Add(new Point(x, y));
                 }
+                Polyline polyline = new Polyline();
+                polyline.StrokeThickness = 3;
+                polyline.Stroke = brushes[currentBrush];
+                polyline.Points = points;
 
-                double xPixelStepSize = (canvas.Width - 2 * margin) / ((0.8 - 0.4) / probabilityStep);
-                double yPixelStepSize = (canvas.Height - 2 * margin) / 100;
+                canvas.Children.Add(polyline);
+                currentBrush++;
+            }           
+        }
 
-                double x = margin + ((probability - 0.4) / probabilityStep) * xPixelStepSize;
-                double y = canvas.Height - margin - yPixelStepSize * (((double)countPercolationClusters / this.operationsPerPoint) * 100);
-                
-                points.Add(new Point(x, y));
-            }
+        private TextBlock DrawTextMark(string text, double x, double y)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.FontSize = 18;
+            textBlock.Text = text;
+            Canvas.SetLeft(textBlock, x);
+            Canvas.SetTop(textBlock, y);
 
-            Polyline polyline = new Polyline();
-            polyline.StrokeThickness = 5;
-            polyline.Stroke = Brushes.Green;
-            polyline.Points = points;
-
-            canvas.Children.Add(polyline);
+            return textBlock;
         }
     }
 }
