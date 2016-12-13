@@ -46,7 +46,7 @@ namespace WpfCluster
                         int yCenter = j * cubeSize - (int)(grid3D.GetLength(1) / 2 * cubeSize);
                         int xCenter = k * cubeSize - (int)(grid3D.GetLength(2) / 2 * cubeSize);
 
-                        opacity = (grid3D[i, j, k] == 3) ? 1 : 0.2;
+                        opacity = 0.2;// (grid3D[i, j, k] == 3) ? 1 : 0.2;
                         viewportField.Children.Add(cubeBuilder.Create(zCenter, -yCenter, xCenter, CubeColor, opacity));
 
                         CubeColor = Color.FromRgb(210, 10, 10);
@@ -57,22 +57,36 @@ namespace WpfCluster
             this.SetCamera(mainCamera, cubeSize);
         }
 
-        public void FillCube(Viewport3D viewportField)
+        public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeSize)
         {
             // enumerator, which supports a simple iteration over a collection of a specified type
-            IEnumerable<Visual3D> cubes = viewportField.Children.OfType<Visual3D>();
+            //IEnumerable<ModelVisual3D> cubes = viewportField.Children.OfType<ModelVisual3D>();
+
+            viewportField.Children.Clear();
+
+            double opacity;
+
+            CubeColor = Color.FromRgb(210, 10, 10);
+            CubeBuilder cubeBuilder = new CubeBuilder(cubeSize);
+            cubeSize++;
 
             for (int i = 0; i < grid3D.GetLength(0); i++)
                 for (int j = 0; j < grid3D.GetLength(1); j++)
                     for (int k = 0; k < grid3D.GetLength(2); k++)
                     {
-                        if (grid3D[i, j, k] == 3)
-                        {
-                            Visual3D cube = cubes.ElementAt(k + j * grid3D.GetLength(1) + i * grid3D.GetLength(0));
-                            //
-                            //System.Windows.MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
-                        }
-                    } 
+                        int zCenter = i * cubeSize - (int)(grid3D.GetLength(0) / 2 * cubeSize);
+                        int yCenter = j * cubeSize - (int)(grid3D.GetLength(1) / 2 * cubeSize);
+                        int xCenter = k * cubeSize - (int)(grid3D.GetLength(2) / 2 * cubeSize);
+
+                        opacity = (grid3D[i, j, k] == 3) ? 1 : 0.2;
+                        viewportField.Children.Add(cubeBuilder.Create(zCenter, -yCenter, xCenter, CubeColor, opacity));
+
+                        CubeColor = Color.FromRgb(210, 10, 10);
+
+                        //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
+                    }
+            this.SetLight(viewportField);
+            this.SetCamera(mainCamera, cubeSize);
         }
 
         private void SetLight(Viewport3D viewportField)

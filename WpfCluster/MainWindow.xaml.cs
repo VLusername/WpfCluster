@@ -24,6 +24,7 @@ namespace WpfCluster
     {
         public DrawCluster drawClusterObj;
         public DrawCluster3D drawClusterObj3D;
+        public DrawStatistics drawStatObj;
 
         private double mousePositionX = 0, mousePositionY = 0;
 
@@ -74,12 +75,12 @@ namespace WpfCluster
             double cubeProbability = Convert.ToDouble(this.cubeProbability.Text);
 
             drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
-            drawClusterObj3D.DrawCube(viewportField, mainCamera, 4);
+            drawClusterObj3D.DrawCube(viewportField, mainCamera, 5);
         }
 
         private void fillCubeButton_Click(object sender, RoutedEventArgs e)
         {
-            drawClusterObj3D.FillCube(viewportField);
+            drawClusterObj3D.FillCube(viewportField, mainCamera, 5);
         }
 
         private void clearCubeButton_Click(object sender, RoutedEventArgs e)
@@ -152,6 +153,13 @@ namespace WpfCluster
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.mousePositionY = e.GetPosition(this).Y;
+        }
+
+        private void drawGraphic_Click(object sender, RoutedEventArgs e)
+        {
+            drawStatObj = new DrawStatistics();
+
+            drawStatObj.DrawCoordinates(graphicCanvasField);
         }
 
     }
