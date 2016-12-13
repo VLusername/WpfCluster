@@ -16,7 +16,7 @@ namespace WpfCluster
         protected int[,] grid;
 
         protected int allClusters;
-        protected List<int> percolationClusters;
+        public List<int> percolationClusters;
 
         /// <summary>
         /// Constructor. Initialize grid and labels array
@@ -90,7 +90,7 @@ namespace WpfCluster
         /// <summary>
         /// Main HK-algorithm method. Scan the grid and set marks to each free cell
         /// </summary>
-        protected void HoshenKopelmanAlgorithm()
+        public void HoshenKopelmanAlgorithm()
         {
             for (int i = 0; i < this.grid.GetLength(0); i++)
                 for (int j = 0; j < this.grid.GetLength(1); j++)

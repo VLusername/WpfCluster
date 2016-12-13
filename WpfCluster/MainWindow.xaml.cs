@@ -157,9 +157,15 @@ namespace WpfCluster
 
         private void drawGraphic_Click(object sender, RoutedEventArgs e)
         {
-            drawStatObj = new DrawStatistics();
+            // TODO: input validation
+
+            int operationCount = Convert.ToInt32(this.operationCount.Text);
+            int exGridSize = Convert.ToInt32(this.experimentalGridSize.Text);          
+
+            drawStatObj = new DrawStatistics(operationCount, exGridSize);
 
             drawStatObj.DrawCoordinates(graphicCanvasField);
+            drawStatObj.DrawExperimentData(graphicCanvasField);
         }
 
     }
