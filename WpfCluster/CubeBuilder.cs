@@ -58,10 +58,8 @@ namespace WpfCluster
             this.cubeSize = size;
         }
 
-        public ModelVisual3D Create(int x, int y, int z, Color color, double opacity)
+        public void Create(ref Model3DGroup cubeModelGroup, int x, int y, int z, Color color, double opacity)
         {
-            Model3DGroup cubeModelGroup = new Model3DGroup();
-
             Point3D p0 = new Point3D(0 + x, 0 + y, 0 + z);
             Point3D p1 = new Point3D(this.cubeSize + x, 0 + y, 0 + z);
             Point3D p2 = new Point3D(this.cubeSize + x, 0 + y, this.cubeSize + z);
@@ -91,10 +89,6 @@ namespace WpfCluster
             //bottom cube side
             cubeModelGroup.Children.Add(CreateTriangle(p2, p3, p0, color, opacity));
             cubeModelGroup.Children.Add(CreateTriangle(p2, p0, p1, color, opacity));
-
-            ModelVisual3D cubeModel3D = new ModelVisual3D();
-            cubeModel3D.Content = cubeModelGroup;
-            return cubeModel3D;
         }
     }
 }

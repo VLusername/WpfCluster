@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WpfCluster.MainWindow"
-        Title="" Height="600" Width="800" FontFamily="Jing Jing" Background="WhiteSmoke" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseRightButtonDown="Window_MouseRightButtonDown" Icon="icon.ico" MinWidth="500" MinHeight="570">
+        Title="" Height="600" Width="800" FontFamily="Jing Jing" Background="WhiteSmoke" MouseWheel="Window_MouseWheel" Icon="icon.ico" MinWidth="500" MinHeight="570" KeyDown="Window_KeyDown">
     <Grid x:Name="mainGrid">
         <TabControl FontFamily="Jing Jing" Margin="10" Background="#FFF9F9F9" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="firstTab" Header="Clusters">
@@ -44,7 +44,7 @@
                     <DockPanel Grid.Column="1">
                         <WrapPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="cubeSize" Text="6" MinWidth="35" MaxHeight="23" MaxLength="2"/>
+                                <TextBox x:Name="cubeSize" Text="4" MinWidth="35" MaxHeight="23" MaxLength="2"/>
                                 <Label Content="Cube (matrix) size"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
@@ -62,7 +62,7 @@
                         <Canvas x:Name="canvasField" Width="500" Height="500">
                         </Canvas>
                     </Viewbox>
-                    <Viewport3D x:Name="viewportField" ClipToBounds="True" Grid.Column="1" Grid.Row="1">
+                    <Viewport3D x:Name="viewportField" ClipToBounds="False" RenderOptions.EdgeMode="Aliased" Grid.Column="1" Grid.Row="1" IsHitTestVisible="False">
                         <Viewport3D.Camera>
                             <PerspectiveCamera x:Name="mainCamera" UpDirection="0,1,0" FarPlaneDistance="150" NearPlaneDistance="1" FieldOfView="100" >
                                 <PerspectiveCamera.Transform>

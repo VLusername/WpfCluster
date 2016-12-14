@@ -26,8 +26,6 @@ namespace WpfCluster
         public DrawCluster3D drawClusterObj3D;
         public DrawStatistics drawStatObj;
 
-        private double mousePositionX = 0, mousePositionY = 0;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -72,6 +70,7 @@ namespace WpfCluster
         {
             fillCubeButton.IsEnabled = true;
             clearCubeButton.IsEnabled = true;
+            viewportField.Children.Clear();
 
             // TODO: input validation
 
@@ -94,69 +93,12 @@ namespace WpfCluster
             viewportField.Children.Clear();
         }
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
-        {
-            int xDirection, yDirection;
-
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                double deltaXDirection = this.mousePositionX - e.GetPosition(this).X;
-                xDirection = deltaXDirection > 0 ? 1 : -1;
-
-                switch (xDirection)
-                {
-                    case 1:
-                        {
-                            rotY.Angle += 1;
-                            break;
-                        }
-                    case -1:
-                        {
-                            rotY.Angle -= 1;
-                            break;
-                        }                     
-                }
-                this.mousePositionX = e.GetPosition(this).X;
-            }
-
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                double deltaYDirection = this.mousePositionY - e.GetPosition(this).Y;
-                yDirection = deltaYDirection > 0 ? 1 : -1;
-
-                switch (yDirection)
-                {
-                    case 1:
-                        {
-                            rotZ.Angle += 1;
-                            break;
-                        }
-                    case -1:
-                        {
-                            rotZ.Angle -= 1;
-                            break;
-                        }
-                }
-                this.mousePositionY = e.GetPosition(this).Y;
-            }
-        }
-
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             mainCamera.Position = new Point3D(
                 mainCamera.Position.X + e.Delta / 150D,
                 mainCamera.Position.Y,
                 mainCamera.Position.Z);
-        }
-
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.mousePositionX = e.GetPosition(this).X;        
-        }
-
-        private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.mousePositionY = e.GetPosition(this).Y;
         }
 
         private void drawGraphic_Click(object sender, RoutedEventArgs e)
@@ -175,6 +117,27 @@ namespace WpfCluster
                 graphicCanvasField.Children.Clear();
                 drawStatObj.DrawCoordinates(graphicCanvasField);
             }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A)
+                rotY.Angle += 5;
+
+            if (e.Key == Key.D)
+                rotY.Angle -= 5;
+
+            if (e.Key == Key.W)
+                rotX.Angle += 5;
+
+            if (e.Key == Key.S)
+                rotX.Angle -= 5;
+
+            if (e.Key == Key.Q)
+                rotZ.Angle += 5;
+
+            if (e.Key == Key.E)
+                rotZ.Angle -= 5;
         }
 
     }

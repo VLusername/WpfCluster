@@ -7,13 +7,16 @@ using System.Windows.Forms;
 
 namespace WpfCluster
 {
+    /// <summary>
+    /// Implementation of Hoshen-Kopelman algorithm for 3D grid (cluster)
+    /// </summary>
     public class FindClustersAlgorithm3D
     {
         private int[] labels3D;
 
         protected int[, ,] grid3D;   
         protected int allClusters3D;
-        protected List<int> foundClusters3D;
+        public List<int> foundClusters3D;
 
         /// <summary>
         /// Constructor. Initialize grid and labels array
@@ -22,7 +25,7 @@ namespace WpfCluster
         /// <param name="probability">Probability for random fill cells of cube/param>
         public FindClustersAlgorithm3D(int size, double probability)
         {
-            /*this.grid3D = new int[size, size, size];
+            this.grid3D = new int[size, size, size];
 
             Random randObj = new Random();
 
@@ -30,12 +33,12 @@ namespace WpfCluster
                 for (int j = 0; j < this.grid3D.GetLength(1); j++)
                     for (int k = 0; k < this.grid3D.GetLength(2); k++)
                         this.grid3D[i, j, k] = (randObj.NextDouble() < probability) ? 1 : 0;
-            */
+            
 
             this.labels3D = new int[size * size * size / 2];
 
             // for TEST!
-            this.grid3D = new int[,,]
+            /*this.grid3D = new int[,,]
             {
                 {
                     {1, 1, 0, 1},
@@ -61,7 +64,7 @@ namespace WpfCluster
                     {0, 1, 0, 1},
                     {0, 1, 0, 0}
                 }
-            };
+            };*/
         }
 
         /// <summary>
@@ -189,11 +192,23 @@ namespace WpfCluster
         /// <remarks>
         /// Percolation clusters is the cluster that starts in one side of the cube and ends in the opposite side
         /// </remarks>
-        public void FindPercolationClusters3D()
+        private void FindPercolationClusters3D()
         {
-            foundClusters3D = new List<int>();
+            this.foundClusters3D = new List<int>();
+            List<int> frontSideClusters3D = new List<int>();
 
-            // TODO: create method
+            // get cluster labels from front side of the cube (z coordinate is 0)
+            for (int i = 0; i < this.grid3D.GetLength(0); i++)
+                for (int j = 0; j < this.grid3D.GetLength(1); j++)
+                        if (this.grid3D[i, j, 0] != 0)
+                            frontSideClusters3D.Add(this.grid3D[i, j, 0]);
+
+            // check back front for labels from foundClusters3D list.
+            // if such clusters exists - percolation effect has been occurred!
+            for (int i = 0; i < this.grid3D.GetLength(0); i++)
+                for (int j = 0; j < this.grid3D.GetLength(1); j++)
+                    if (this.grid3D[i, j, this.grid3D.GetLength(2) - 1] != 0 && frontSideClusters3D.Contains(this.grid3D[i, j, this.grid3D.GetLength(2) - 1]) && !this.foundClusters3D.Contains(this.grid3D[i, j, this.grid3D.GetLength(2) - 1]))
+                        this.foundClusters3D.Add(this.grid3D[i, j, 0]);
         }
     }
 }
