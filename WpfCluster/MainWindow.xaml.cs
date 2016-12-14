@@ -70,7 +70,7 @@ namespace WpfCluster
         {
             fillCubeButton.IsEnabled = true;
             clearCubeButton.IsEnabled = true;
-            viewportField.Children.Clear();
+            cubeModel.Children.Clear();
 
             // TODO: input validation
 
@@ -78,19 +78,20 @@ namespace WpfCluster
             double cubeProbability = Convert.ToDouble(this.cubeProbability.Text);
 
             drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
-            drawClusterObj3D.DrawCube(viewportField, mainCamera, 5);
+            drawClusterObj3D.DrawCube(viewportField, mainCamera, 5, ref cubeModel);
         }
 
         private void fillCubeButton_Click(object sender, RoutedEventArgs e)
         {
-            drawClusterObj3D.FillCube(viewportField, mainCamera, 5);
+            drawClusterObj3D.FillCube(viewportField, mainCamera, 5, ref cubeModel);
         }
 
         private void clearCubeButton_Click(object sender, RoutedEventArgs e)
         {
             fillCubeButton.IsEnabled = false;
             clearCubeButton.IsEnabled = false;
-            viewportField.Children.Clear();
+            cubeModel.Children.Clear();
+            cubeModel.Content = null;
         }
 
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -122,22 +123,22 @@ namespace WpfCluster
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.A)
-                rotY.Angle += 5;
+                rotateCubeY.Angle += 5;
 
             if (e.Key == Key.D)
-                rotY.Angle -= 5;
+                rotateCubeY.Angle -= 5;
 
             if (e.Key == Key.W)
-                rotX.Angle += 5;
+                rotateCubeX.Angle += 5;
 
             if (e.Key == Key.S)
-                rotX.Angle -= 5;
+                rotateCubeX.Angle -= 5;
 
             if (e.Key == Key.Q)
-                rotZ.Angle += 5;
+                rotateCubeZ.Angle += 5;
 
             if (e.Key == Key.E)
-                rotZ.Angle -= 5;
+                rotateCubeZ.Angle -= 5;
         }
 
     }

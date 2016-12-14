@@ -34,42 +34,36 @@ namespace WpfCluster
         /// </summary>
         /// <param name="viewportField">Viewport3D object for drawing shapes</param>
         /// <param name="mainCamera">PerspectiveCamera object for setting camera coordinates</param>
-        /// <param name="cubeSize">Size of ONE cell if cube (for calculating distanse from main cube)</param>
-        public void DrawCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeSize)
+        /// <param name="cubeCellSize">Size of ONE cell if cube (for calculating distanse from main cube)</param>
+        /// <param name="cubeModel3D">ModelVisual3D object for drawing cube</param>
+        public void DrawCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeCellSize, ref ModelVisual3D cubeModel3D)
         {
             // calculate matrix before drawing
             HoshenKopelmanAlgorithm3D();
-           
-            double opacity;            
+
+            double opacity = 0.2;            
 
             CubeColor = Color.FromRgb(210, 10, 10);
-            CubeBuilder cubeBuilder = new CubeBuilder(cubeSize);
-
+            CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
             Model3DGroup cubeModelGroup = new Model3DGroup();
-            ModelVisual3D cubeModel3D = new ModelVisual3D();
-
-            cubeSize++;
+            cubeCellSize++;
 
             for (int i = 0; i < grid3D.GetLength(0); i++)
                 for (int j = 0; j < grid3D.GetLength(1); j++)
                     for (int k = 0; k < grid3D.GetLength(2); k++)
                     {
-                        int zCenter = i * cubeSize - (int)((grid3D.GetLength(0) / 2) * cubeSize);
-                        int yCenter = j * cubeSize - (int)((grid3D.GetLength(1) / 2) * cubeSize);
-                        int xCenter = k * cubeSize - (int)((grid3D.GetLength(2) / 2) * cubeSize);
-
-                        opacity = 0.2;
+                        int zCenter = i * cubeCellSize - (int)((grid3D.GetLength(0) / 2) * cubeCellSize);
+                        int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
+                        int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
                         cubeBuilder.Create(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);
 
                         //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }
-
             cubeModel3D.Content = cubeModelGroup;
-            viewportField.Children.Add(cubeModel3D);
 
             this.SetLight(viewportField);
-            this.SetCamera(mainCamera, cubeSize);
+            this.SetCamera(mainCamera, cubeCellSize);
         }
 
         /// <summary>
@@ -77,34 +71,32 @@ namespace WpfCluster
         /// </summary>
         /// <param name="viewportField">Viewport3D object for drawing shapes</param>
         /// <param name="mainCamera">PerspectiveCamera object for setting camera coordinates</param>
-        /// <param name="cubeSize">Size of ONE cell if cube</param>
-        public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeSize)
+        /// <param name="cubeCellSize">Size of ONE cell if cube</param>
+        /// <param name="cubeModel3D">ModelVisual3D object for drawing cube</param>
+        public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeCellSize, ref ModelVisual3D cubeModel3D)
         {
             // enumerator, which supports a simple iteration over a collection of a specified type
             //IEnumerable<ModelVisual3D> cubes = viewportField.Children.OfType<ModelVisual3D>();
 
-            viewportField.Children.Clear();
+            cubeModel3D.Children.Clear();
 
             double opacity;
 
             CubeColor = Color.FromRgb(210, 10, 10);
-            CubeBuilder cubeBuilder = new CubeBuilder(cubeSize);
-
+            CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
             Model3DGroup cubeModelGroup = new Model3DGroup();
-            ModelVisual3D cubeModel3D = new ModelVisual3D();
-
-            cubeSize++;
+            cubeCellSize++;
 
             for (int i = 0; i < grid3D.GetLength(0); i++)
                 for (int j = 0; j < grid3D.GetLength(1); j++)
                     for (int k = 0; k < grid3D.GetLength(2); k++)
                     {
-                        int zCenter = i * cubeSize - (int)((grid3D.GetLength(0) / 2) * cubeSize);
-                        int yCenter = j * cubeSize - (int)((grid3D.GetLength(1) / 2) * cubeSize);
-                        int xCenter = k * cubeSize - (int)((grid3D.GetLength(2) / 2) * cubeSize);
+                        int zCenter = i * cubeCellSize - (int)((grid3D.GetLength(0) / 2) * cubeCellSize);
+                        int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
+                        int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
                         // display any cluster
-                        opacity = (grid3D[i, j, k] != 0) ? 0.8 : 0.2;
+                        opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
 
                         // change color of percolation clusters
                         CubeColor = (grid3D[i, j, k] != 0 && foundClusters3D.Contains(grid3D[i, j, k])) ? Color.FromRgb(10, 10, 210) : Color.FromRgb(210, 10, 10);
@@ -114,12 +106,10 @@ namespace WpfCluster
 
                         //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }
-
             cubeModel3D.Content = cubeModelGroup;
-            viewportField.Children.Add(cubeModel3D);
 
             this.SetLight(viewportField);
-            this.SetCamera(mainCamera, cubeSize);
+            this.SetCamera(mainCamera, cubeCellSize);
         }
 
         /// <summary>
@@ -128,13 +118,6 @@ namespace WpfCluster
         /// <param name="viewportField">Viewport3D object for adding light objects</param>
         private void SetLight(Viewport3D viewportField)
         {
-            ModelVisual3D firstLightResourse = new ModelVisual3D();
-            firstLightResourse.Content = new DirectionalLight(Colors.Transparent, new Vector3D(15, 15, 15));
-            viewportField.Children.Add(firstLightResourse);
-
-            ModelVisual3D secondLightResourse = new ModelVisual3D();
-            secondLightResourse.Content = new DirectionalLight(Colors.Transparent, new Vector3D(-15, -15, -15));
-            viewportField.Children.Add(secondLightResourse);
         }
 
         /// <summary>
@@ -144,9 +127,11 @@ namespace WpfCluster
         /// <param name="cubeSize">Size of ONE cell if cube (for calculating distanse from main cube)</param>
         private void SetCamera(PerspectiveCamera mainCamera, int cubeSize)
         {
-            int cameraCoor = grid3D.GetLength(0) * cubeSize + 10;
-            mainCamera.Position = new Point3D(-cameraCoor, 0, 0);
-            mainCamera.LookDirection = new Vector3D(0 + cameraCoor, 0, 0);
+            int xCameraCoor = grid3D.GetLength(0) * cubeSize + 10;
+            int yCameraCoor = (grid3D.GetLength(1) / 2) * cubeSize;
+
+            mainCamera.Position = new Point3D(-xCameraCoor, yCameraCoor, 0);
+            mainCamera.LookDirection = new Vector3D(0 + xCameraCoor, 0 - yCameraCoor, 0);
         }
     }
 }

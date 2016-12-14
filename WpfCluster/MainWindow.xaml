@@ -64,28 +64,39 @@
                     </Viewbox>
                     <Viewport3D x:Name="viewportField" ClipToBounds="False" RenderOptions.EdgeMode="Aliased" Grid.Column="1" Grid.Row="1" IsHitTestVisible="False">
                         <Viewport3D.Camera>
-                            <PerspectiveCamera x:Name="mainCamera" UpDirection="0,1,0" FarPlaneDistance="150" NearPlaneDistance="1" FieldOfView="100" >
-                                <PerspectiveCamera.Transform>
-                                    <Transform3DGroup>
-                                        <RotateTransform3D>
-                                            <RotateTransform3D.Rotation>
-                                                <AxisAngleRotation3D x:Name="rotY" Axis="0 1 0" Angle="0" />
-                                            </RotateTransform3D.Rotation>
-                                        </RotateTransform3D>
-                                        <RotateTransform3D>
-                                            <RotateTransform3D.Rotation>
-                                                <AxisAngleRotation3D x:Name="rotX" Axis="1 0 0" Angle="0" />
-                                            </RotateTransform3D.Rotation>
-                                        </RotateTransform3D>
-                                        <RotateTransform3D>
-                                            <RotateTransform3D.Rotation>
-                                                <AxisAngleRotation3D x:Name="rotZ" Axis="0 0 1" Angle="0" />
-                                            </RotateTransform3D.Rotation>
-                                        </RotateTransform3D>
-                                    </Transform3DGroup>
-                                </PerspectiveCamera.Transform>
-                            </PerspectiveCamera>
+                            <PerspectiveCamera x:Name="mainCamera" UpDirection="0,1,0" FarPlaneDistance="150" NearPlaneDistance="1" FieldOfView="100" ></PerspectiveCamera>
                         </Viewport3D.Camera>
+                        <ModelVisual3D x:Name="cubeModel">
+                            <ModelVisual3D.Transform>
+                                <Transform3DGroup>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="rotateCubeX" Axis="1 0 0"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="rotateCubeY" Axis="0 1 0"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="rotateCubeZ" Axis="0 0 1"/>
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                </Transform3DGroup>                             
+                            </ModelVisual3D.Transform>
+                        </ModelVisual3D>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <DirectionalLight x:Name="dirLight1" Color="Transparent" Direction="1, 1, 1"></DirectionalLight>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <DirectionalLight x:Name="dirLight2" Color="Transparent" Direction="-1,-1,-1"></DirectionalLight>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
                     </Viewport3D>
                 </Grid>
             </TabItem>

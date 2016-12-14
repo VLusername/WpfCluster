@@ -13,7 +13,7 @@ namespace WpfCluster
     public class DrawStatistics
     {
         private static int margin = 50;
-        private static int stepsCount = 6;
+        private static int stepsCount = 8;
         private static int markSize = 10;
         private int operationsPerPoint;
             
@@ -34,6 +34,18 @@ namespace WpfCluster
             Point xLineEnd = new Point(canvas.Width, canvas.Height - margin);           
             linesGroup.Children.Add(new LineGeometry(xLineStart, xLineEnd));
 
+            Point yLineStart = new Point(margin, 0);
+            Point yLineEnd = new Point(margin, canvas.Height);
+            linesGroup.Children.Add(new LineGeometry(yLineStart, yLineEnd));
+
+            Path linePath = new Path();
+            linePath.StrokeThickness = 3;
+            linePath.Stroke = Brushes.Black;
+            linePath.Data = linesGroup;
+
+            canvas.Children.Add(linePath);
+
+            linesGroup = new GeometryGroup();
             double xStepSize = (canvas.Width - 2 * margin) / stepsCount;
             for (double xCoord = margin + xStepSize; xCoord < canvas.Width; xCoord += xStepSize)
             {
@@ -47,27 +59,20 @@ namespace WpfCluster
             canvas.Children.Add(this.DrawTextMark("P", canvas.Width, canvas.Height - margin));
 
 
-            Point yLineStart = new Point(margin, 0);
-            Point yLineEnd = new Point(margin, canvas.Height);
-            linesGroup.Children.Add(new LineGeometry(yLineStart, yLineEnd));
-
-            double yStepSize = (canvas.Height - 2 * margin) / stepsCount;
+            double yStepSize = (canvas.Height - 2 * margin) / 5;
             for (double yCoord = canvas.Height - margin - yStepSize; yCoord > 0; yCoord -= yStepSize)
             {
                 Point yMarkStart = new Point(0 + margin - markSize, yCoord);
                 Point yMarkEnd = new Point(0 + margin, yCoord);
                 linesGroup.Children.Add(new LineGeometry(yMarkStart, yMarkEnd));
 
-                if (yText < 1)
-                {
-                    yText += 0.2;
-                    canvas.Children.Add(this.DrawTextMark(yText.ToString(), 0, yCoord - 15));
-                }
+                yText += 0.2;
+                canvas.Children.Add(this.DrawTextMark(yText.ToString(), 0, yCoord - 15));
             }
             canvas.Children.Add(this.DrawTextMark("M/N", 0, 0));
 
-            Path linePath = new Path();
-            linePath.StrokeThickness = 3;
+            linePath = new Path();
+            linePath.StrokeThickness = 1;
             linePath.Stroke = Brushes.Black;
             linePath.Data = linesGroup;
 
