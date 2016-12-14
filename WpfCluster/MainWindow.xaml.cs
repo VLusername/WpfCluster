@@ -47,9 +47,12 @@ namespace WpfCluster
 
             int gridSize = Convert.ToInt32(this.gridSize.Text);
             double probability = Convert.ToDouble(this.probability.Text);
+            string percolationClustersText = "";
 
             drawClusterObj = new DrawCluster(gridSize, probability);
-            drawClusterObj.DrawGrid(canvasField);
+            drawClusterObj.DrawGrid(canvasField, ref percolationClustersText, (bool)showClusterCount.IsChecked, (bool)differentColors.IsChecked);
+
+            foundClustersLabel.Content = percolationClustersText;
         }
 
         private void fillButton_Click(object sender, RoutedEventArgs e)
@@ -62,6 +65,7 @@ namespace WpfCluster
             canvasField.Children.Clear();
             fillButton.IsEnabled = false;
             clearButton.IsEnabled = false;
+            foundClustersLabel.Content = "";
         }
 
         private void drawCubeButton_Click(object sender, RoutedEventArgs e)

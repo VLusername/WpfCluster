@@ -25,13 +25,19 @@
                                 <TextBox x:Name="probability" Text="0,58" MinWidth="35" MaxHeight="23" MaxLength="5"/>
                                 <Label Content="Grid cells probability"/>                               
                             </StackPanel>
-                            <StackPanel>
-                                <CheckBox x:Name="showClusterCount" Content="Show Cluster Num"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox x:Name="showClusterCount" Content="Show Numbers "/>
+                                <CheckBox x:Name="differentColors" Content="Draw in diff colors"/>
                             </StackPanel>                          
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="drawButton" Content="Draw" Margin="5" Click="drawButton_Click"/>
-                                <Button x:Name="fillButton" Content="Fill" Margin="5" Click="fillButton_Click"/>
-                                <Button x:Name="clearButton" Content="Clear" Margin="5" Click="clearButton_Click"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="drawButton" Content="Draw" Margin="5" Click="drawButton_Click"/>
+                                    <Button x:Name="fillButton" Content="Fill" Margin="5" Click="fillButton_Click"/>
+                                    <Button x:Name="clearButton" Content="Clear" Margin="5" Click="clearButton_Click"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <Label x:Name="foundClustersLabel" Margin="5" Foreground="Blue"></Label>
+                                </StackPanel>
                             </StackPanel>
                         </WrapPanel>
                     </DockPanel>
