@@ -46,6 +46,8 @@ namespace WpfCluster
             CubeColor = Color.FromRgb(210, 10, 10);
             CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
             Model3DGroup cubeModelGroup = new Model3DGroup();
+
+            // for spacce between cells
             cubeCellSize++;
 
             for (int i = 0; i < grid3D.GetLength(0); i++)
@@ -82,11 +84,14 @@ namespace WpfCluster
 
             cubeModel3D.Children.Clear();
 
-            double opacity;
+            double opacity = 0.5;
 
-            CubeColor = Color.FromRgb(210, 10, 10);
             CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
             Model3DGroup cubeModelGroup = new Model3DGroup();
+            Random rand = new Random();
+            Dictionary<int, Color> clusterColors = new Dictionary<int, Color>();
+
+            // for spacce between cells
             cubeCellSize++;
 
             for (int i = 0; i < grid3D.GetLength(0); i++)
@@ -97,11 +102,31 @@ namespace WpfCluster
                         int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
                         int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
-                        // display any cluster
-                        opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
+                        //opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
 
                         // change color of percolation clusters
-                        CubeColor = (grid3D[i, j, k] != 0 && foundClusters3D.Contains(grid3D[i, j, k])) ? Color.FromRgb(10, 10, 210) : Color.FromRgb(210, 10, 10);
+                        if (grid3D[i, j, k] != 0 /*&& foundClusters3D.Contains(grid3D[i, j, k])*/)
+                        {
+                            if (clusterColors.ContainsKey(grid3D[i, j, k]))
+                            {
+                                CubeColor = clusterColors[grid3D[i, j, k]];
+                            }
+                            else
+                            {
+                                int red = rand.Next(0, byte.MaxValue + 1);
+                                int green = rand.Next(0, byte.MaxValue + 1);
+                                int blue = rand.Next(0, byte.MaxValue + 1);
+                                Color color = Color.FromRgb((byte)red, (byte)green, (byte)blue);
+
+                                clusterColors.Add(grid3D[i, j, k], color);
+
+                                CubeColor = color;
+                            }
+                        }
+                        else
+                        {
+                            CubeColor = Color.FromRgb(210, 10, 10);
+                        }
 
                         // redraw cube parts
                         cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);  

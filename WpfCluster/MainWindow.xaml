@@ -125,9 +125,9 @@
                     <DockPanel Grid.Row="2" HorizontalAlignment="Center">                       
                         <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Grid size (N): 30" Foreground="Red"/>
-                                <Label Content="Grid size (N): 50" Foreground="Green"/>
-                                <Label Content="Grid size (N): 70" Foreground="Blue"/>
+                                <Label Content="Grid size: 50" Foreground="Red"/>
+                                <Label Content="Grid size: 100" Foreground="Green"/>
+                                <Label Content="Grid size: 150" Foreground="Blue"/>
                             </StackPanel>
                         </WrapPanel>
                     </DockPanel>

@@ -65,8 +65,7 @@ namespace WpfCluster
                                 clusterColors.Add(grid[i, j], color);
 
                                 rectBrush = new SolidColorBrush(color);
-                            }
-                            
+                            }                           
                         }
                         else 
                         {

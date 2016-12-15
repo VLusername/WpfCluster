@@ -106,26 +106,28 @@ namespace WpfCluster
             // TODO: input scale step, remove hardcode
 
             double probabilityStep = 0.05;
+            double startProbability = 0.4;
+            double endProbability = startProbability + 0.05 * stepsCount;
 
-            for (int gridSize = 30; gridSize <= 70; gridSize += 20)
+            for (int gridSize = 50; gridSize <= 150; gridSize += 50)
             {
                 points = new PointCollection();
-                for (double probability = 0.4; probability < 0.8; probability += probabilityStep)
+                for (double prob = startProbability; prob <= endProbability; prob += probabilityStep)
                 {
                     int countPercolationClusters = 0;
                     for (int j = 0; j < this.operationsPerPoint; j++)
                     {
-                        findClusterObj = new FindClustersAlgorithm(gridSize, probability);
+                        findClusterObj = new FindClustersAlgorithm(gridSize, prob);
                         findClusterObj.HoshenKopelmanAlgorithm(true);
 
                         if (findClusterObj.lightCheckResult)
                             countPercolationClusters++;
                     }
 
-                    double xPixelStepSize = (canvas.Width - 2 * margin) / ((0.8 - 0.4) / probabilityStep);
+                    double xPixelStepSize = (canvas.Width - 2 * margin) / ((endProbability - startProbability) / probabilityStep);
                     double yPixelStepSize = (canvas.Height - 2 * margin) / 100;
 
-                    double x = margin + ((probability - 0.4) / probabilityStep) * xPixelStepSize;
+                    double x = margin + ((prob - startProbability) / probabilityStep) * xPixelStepSize;
                     double y = canvas.Height - margin - yPixelStepSize * (((double)countPercolationClusters / this.operationsPerPoint) * 100);
 
                     points.Add(new Point(x, y));
