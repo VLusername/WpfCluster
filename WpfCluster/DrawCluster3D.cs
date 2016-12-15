@@ -41,7 +41,7 @@ namespace WpfCluster
             // calculate matrix before drawing
             HoshenKopelmanAlgorithm3D();
 
-            double opacity = 0.2;            
+            double opacity;            
 
             CubeColor = Color.FromRgb(210, 10, 10);
             CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
@@ -56,7 +56,9 @@ namespace WpfCluster
                         int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
                         int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
-                        cubeBuilder.Create(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);
+                        opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
+
+                        cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);
 
                         //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }
@@ -102,7 +104,7 @@ namespace WpfCluster
                         CubeColor = (grid3D[i, j, k] != 0 && foundClusters3D.Contains(grid3D[i, j, k])) ? Color.FromRgb(10, 10, 210) : Color.FromRgb(210, 10, 10);
 
                         // redraw cube parts
-                        cubeBuilder.Create(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);  
+                        cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);  
 
                         //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }

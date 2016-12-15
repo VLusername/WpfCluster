@@ -10,18 +10,29 @@ using System.Windows.Shapes;
 
 namespace WpfCluster
 {
+    /// <summary>
+    /// Class for drawing 2D diagram
+    /// </summary>
     public class DrawStatistics
     {
         private static int margin = 50;
         private static int stepsCount = 8;
         private static int markSize = 10;
         private int operationsPerPoint;
-            
+
+        /// <summary>
+        /// Constructor with params
+        /// </summary>
+        /// <param name="operationsPerPoint">Count of operations (HK algorithm in cycle) for one point in diagram</param>
         public DrawStatistics(int operationsPerPoint)
         {
             this.operationsPerPoint = operationsPerPoint;
         }
 
+        /// <summary>
+        /// Draw 2D coordinates and mark them
+        /// </summary>
+        /// <param name="canvas">Canvas object for drawing</param>
         public void DrawCoordinates(Canvas canvas)
         {
             canvas.Children.Clear();
@@ -79,6 +90,10 @@ namespace WpfCluster
             canvas.Children.Add(linePath);         
         }
 
+        /// <summary>
+        /// Calculate and draw graphic results of finding the percolation critical point
+        /// </summary>
+        /// <param name="canvas">Canvas object for drawing</param>
         public void DrawExperimentData(Canvas canvas)
         {
             this.DrawCoordinates(canvas);
@@ -125,6 +140,13 @@ namespace WpfCluster
             }           
         }
 
+        /// <summary>
+        /// Create and return text mark for drawing it on canvas in choosing coordinates
+        /// </summary>
+        /// <param name="text">Mark content</param>
+        /// <param name="x">x coordinate (on canvas)</param>
+        /// <param name="y">y coordinate (on canvas)</param>
+        /// <returns>TextBlock object with applying params</returns>
         private TextBlock DrawTextMark(string text, double x, double y)
         {
             TextBlock textBlock = new TextBlock();
