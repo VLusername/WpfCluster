@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WpfCluster.MainWindow"
         Title="" Height="600" Width="800" FontFamily="Jing Jing" Background="WhiteSmoke" MouseWheel="Window_MouseWheel" Icon="icon.ico" MinWidth="500" MinHeight="570" KeyDown="Window_KeyDown">
     <Grid x:Name="mainGrid">
-        <TabControl FontFamily="Jing Jing" Margin="10" Background="#FFF9F9F9" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl Margin="10" Background="#FFF9F9F9" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged" FontSize="14" FontWeight="ExtraBold">
             <TabItem x:Name="firstTab" Header="Clusters">
                 <Grid x:Name="firstPageGrid" Margin="10">
                     <Grid.RowDefinitions>
@@ -18,17 +18,17 @@
                     <DockPanel Grid.Column="0">
                         <WrapPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="gridSize" Text="20" MinWidth="35" MaxHeight="23" MaxLength="3"/>
-                                <Label Content="Grid (matrix) size"/>                               
+                                <TextBox x:Name="gridSize" Text="20" MinWidth="35" MaxHeight="23" MaxLength="3" FontFamily="Jing Jing" FontSize="12" FontWeight="Normal"/>
+                                <Label Content="Grid (matrix) size" FontWeight="ExtraBold" FontSize="14" FontFamily="Source Sans Pro"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="probability" Text="0,58" MinWidth="35" MaxHeight="23" MaxLength="5"/>
-                                <Label Content="Grid cells probability"/>                               
+                                <TextBox x:Name="probability" Text="0,58" MinWidth="35" MaxHeight="23" MaxLength="5" FontFamily="Jing Jing" FontSize="12" FontWeight="Normal"/>
+                                <Label Content="Grid cells probability" FontWeight="ExtraBold" FontSize="14" FontFamily="Source Sans Pro"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="showClusterCount" Content="Show Numbers "/>
-                                <CheckBox x:Name="differentColors" Content="Draw in diff colors"/>
-                            </StackPanel>                          
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <CheckBox x:Name="showClusterCount" Content="Show numbers " FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                                <CheckBox x:Name="differentColors" Content="Diff colors" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel Orientation="Horizontal">
                                     <Button x:Name="drawButton" Content="Draw" Margin="5" Click="drawButton_Click"/>
@@ -44,12 +44,12 @@
                     <DockPanel Grid.Column="1">
                         <WrapPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="cubeSize" Text="4" MinWidth="35" MaxHeight="23" MaxLength="2"/>
-                                <Label Content="Cube (matrix) size"/>
+                                <TextBox x:Name="cubeSize" Text="4" MinWidth="35" MaxHeight="23" MaxLength="2" FontFamily="Jing Jing" FontSize="12" FontWeight="Normal"/>
+                                <Label Content="Cube (matrix) size" FontWeight="ExtraBold" FontSize="14" FontFamily="Source Sans Pro"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="cubeProbability" Text="0,58" MinWidth="35" MaxHeight="23" MaxLength="5"/>
-                                <Label Content="Cube cells probability"/>
+                                <TextBox x:Name="cubeProbability" Text="0,58" MinWidth="35" MaxHeight="23" MaxLength="5" FontFamily="Jing Jing" FontSize="12" FontWeight="Normal"/>
+                                <Label Content="Cube cells probability" FontWeight="ExtraBold" FontSize="14" FontFamily="Source Sans Pro"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Button x:Name="drawCubeButton" Content="Draw" Margin="5" Click="drawCubeButton_Click"/>
@@ -84,7 +84,7 @@
                                             <AxisAngleRotation3D x:Name="rotateCubeZ" Axis="0 0 1"/>
                                         </RotateTransform3D.Rotation>
                                     </RotateTransform3D>
-                                </Transform3DGroup>                             
+                                </Transform3DGroup>
                             </ModelVisual3D.Transform>
                         </ModelVisual3D>
                         <ModelVisual3D>
@@ -104,14 +104,14 @@
                 <Grid x:Name="secondPageGrid" Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.3*"/>
-                        <RowDefinition Height="1.6*"/>
-                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="1.55*"/>
+                        <RowDefinition Height="0.15*"/>
                     </Grid.RowDefinitions>
-                    <DockPanel Grid.Row="0" HorizontalAlignment="Center">                        
+                    <DockPanel Grid.Row="0" HorizontalAlignment="Center">
                         <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="operationCount" Text="100" MinWidth="35" MaxHeight="23" MaxLength="3"/>
-                                <Label Content="Operation count for one point"/>
+                                <TextBox x:Name="operationCount" Text="100" MinWidth="35" MaxHeight="23" MaxLength="3" FontFamily="Jing Jing" FontWeight="Normal" FontSize="12"/>
+                                <Label Content="Operation count for one point" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
                             </StackPanel>
                             <StackPanel>
                                 <Button x:Name="drawGraphic" Content="Draw" Margin="4" Click="drawGraphic_Click" HorizontalAlignment="Center"/>
@@ -122,7 +122,7 @@
                         <Canvas x:Name="graphicCanvasField" Width="500" Height="500">
                         </Canvas>
                     </Viewbox>
-                    <DockPanel Grid.Row="2" HorizontalAlignment="Center">                       
+                    <DockPanel Grid.Row="2" HorizontalAlignment="Center">
                         <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Grid size: 50" Foreground="Red"/>
