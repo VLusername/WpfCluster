@@ -37,20 +37,39 @@ namespace WpfCluster
 
         private void drawButton_Click(object sender, RoutedEventArgs e)
         {           
-            canvasField.Children.Clear();
-            fillButton.IsEnabled = true;
-            clearButton.IsEnabled = true;
+            int gridSize;
+            double probability;
 
-            // TODO: validate input
+            if (!int.TryParse(this.gridSize.Text, out gridSize) || gridSize < 2 || gridSize > 250)
+            {
+                MessageBox.Show(
+                    "Grid size must be positive integer greater from 2 to 250!",
+                    "Parse error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );             
+            }
+            else if (!double.TryParse(this.probability.Text, out probability) || probability < 0 || probability > 1)
+            {
+                MessageBox.Show(
+                    "Probability must be positive double from 0 to 1!",
+                    "Parse error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );
+            }
+            else
+            {
+                canvasField.Children.Clear();
+                fillButton.IsEnabled = true;
+                clearButton.IsEnabled = true;
+                string percolationClustersText = "";
 
-            int gridSize = Convert.ToInt32(this.gridSize.Text);
-            double probability = Convert.ToDouble(this.probability.Text);
-            string percolationClustersText = "";
+                drawClusterObj = new DrawCluster(gridSize, probability);
+                drawClusterObj.DrawGrid(canvasField, ref percolationClustersText, (bool)showClusterCount.IsChecked, (bool)differentColors.IsChecked);
 
-            drawClusterObj = new DrawCluster(gridSize, probability);
-            drawClusterObj.DrawGrid(canvasField, ref percolationClustersText, (bool)showClusterCount.IsChecked, (bool)differentColors.IsChecked);
-
-            foundClustersLabel.Content = percolationClustersText;
+                foundClustersLabel.Content = percolationClustersText;
+            }
         }
 
         private void fillButton_Click(object sender, RoutedEventArgs e)
@@ -68,17 +87,35 @@ namespace WpfCluster
 
         private void drawCubeButton_Click(object sender, RoutedEventArgs e)
         {
-            fillCubeButton.IsEnabled = true;
-            clearCubeButton.IsEnabled = true;
-            cubeModel.Children.Clear();
+            int cubeSize;
+            double cubeProbability;
+            if (!int.TryParse(this.cubeSize.Text, out cubeSize) || cubeSize < 2 || cubeSize > 16)
+            {
+                MessageBox.Show(
+                    "Cube size must be positive integer greater from 2 to 16!",
+                    "Parse error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );             
+            }
+            else if (!double.TryParse(this.cubeProbability.Text, out cubeProbability) || cubeProbability < 0 || cubeProbability > 1)
+            {
+                MessageBox.Show(
+                    "Cube probability must be positive double from 0 to 1!",
+                    "Parse error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );
+            }
+            else
+            {
+                fillCubeButton.IsEnabled = true;
+                clearCubeButton.IsEnabled = true;
+                cubeModel.Children.Clear();
 
-            // TODO: input validation
-
-            int cubeSize = Convert.ToInt32(this.cubeSize.Text);
-            double cubeProbability = Convert.ToDouble(this.cubeProbability.Text);
-
-            drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
-            drawClusterObj3D.DrawCube(viewportField, mainCamera, 5, ref cubeModel);
+                drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
+                drawClusterObj3D.DrawCube(viewportField, mainCamera, 5, ref cubeModel);
+            }
         }
 
         private void fillCubeButton_Click(object sender, RoutedEventArgs e)
@@ -103,18 +140,28 @@ namespace WpfCluster
         }
 
         private void drawGraphic_Click(object sender, RoutedEventArgs e)
-        {          
-            drawStatObj.DrawExperimentData(graphicCanvasField);
+        {
+            int operationCount;
+            if (!int.TryParse(this.operationCount.Text, out operationCount) || operationCount < 1 || operationCount > 150)
+            {
+                MessageBox.Show(
+                    "Operation count must be positive integer from 1 to 150!",
+                    "Parse error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );
+            }
+            else
+            {
+                drawStatObj.DrawExperimentData(graphicCanvasField, operationCount);
+            }         
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (secondTab.IsSelected)
             {
-                // TODO: input validation
-
-                int operationCount = Convert.ToInt32(this.operationCount.Text);
-                drawStatObj = new DrawStatistics(operationCount);
+                drawStatObj = new DrawStatistics();
                 graphicCanvasField.Children.Clear();
                 drawStatObj.DrawCoordinates(graphicCanvasField);
             }

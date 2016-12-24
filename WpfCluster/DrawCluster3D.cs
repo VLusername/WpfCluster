@@ -58,11 +58,9 @@ namespace WpfCluster
                         int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
                         int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
-                        opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
+                        opacity = (grid3D[i, j, k] != 0) ? 0.2 : 0.7;
 
                         cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);
-
-                        //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }
             cubeModel3D.Content = cubeModelGroup;
 
@@ -78,13 +76,10 @@ namespace WpfCluster
         /// <param name="cubeCellSize">Size of ONE cell if cube</param>
         /// <param name="cubeModel3D">ModelVisual3D object for drawing cube</param>
         public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeCellSize, ref ModelVisual3D cubeModel3D)
-        {
-            // enumerator, which supports a simple iteration over a collection of a specified type
-            //IEnumerable<ModelVisual3D> cubes = viewportField.Children.OfType<ModelVisual3D>();
-
+        {           
             cubeModel3D.Children.Clear();
 
-            double opacity = 0.5;
+            double opacity = 0.2;
 
             CubeBuilder cubeBuilder = new CubeBuilder(cubeCellSize);
             Model3DGroup cubeModelGroup = new Model3DGroup();
@@ -102,10 +97,8 @@ namespace WpfCluster
                         int yCenter = j * cubeCellSize - (int)((grid3D.GetLength(1) / 2) * cubeCellSize);
                         int xCenter = k * cubeCellSize - (int)((grid3D.GetLength(2) / 2) * cubeCellSize);
 
-                        //opacity = (grid3D[i, j, k] != 0) ? 0.7 : 0.2;
-
                         // change color of percolation clusters
-                        if (grid3D[i, j, k] != 0 /*&& foundClusters3D.Contains(grid3D[i, j, k])*/)
+                        if (grid3D[i, j, k] != 0)
                         {
                             if (clusterColors.ContainsKey(grid3D[i, j, k]))
                             {
@@ -122,16 +115,16 @@ namespace WpfCluster
 
                                 CubeColor = color;
                             }
+                            opacity = foundClusters3D.Contains(grid3D[i, j, k]) ? 0.7 : 0.2;
                         }
                         else
                         {
+                            opacity = 0.7;
                             CubeColor = Color.FromRgb(210, 10, 10);
                         }
 
                         // redraw cube parts
                         cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);  
-
-                        //MessageBox.Show(i.ToString() + "," + j.ToString() + "," + k.ToString(), "Yo");
                     }
             cubeModel3D.Content = cubeModelGroup;
 

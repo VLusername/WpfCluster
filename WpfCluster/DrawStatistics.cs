@@ -18,15 +18,12 @@ namespace WpfCluster
         private static int margin = 50;
         private static int stepsCount = 8;
         private static int markSize = 10;
-        private int operationsPerPoint;
 
         /// <summary>
-        /// Constructor with params
+        /// Constructor
         /// </summary>
-        /// <param name="operationsPerPoint">Count of operations (HK algorithm in cycle) for one point in diagram</param>
-        public DrawStatistics(int operationsPerPoint)
-        {
-            this.operationsPerPoint = operationsPerPoint;
+        public DrawStatistics()
+        {          
         }
 
         /// <summary>
@@ -94,7 +91,8 @@ namespace WpfCluster
         /// Calculate and draw graphic results of finding the percolation critical point
         /// </summary>
         /// <param name="canvas">Canvas object for drawing</param>
-        public void DrawExperimentData(Canvas canvas)
+        /// <param name="operationsPerPoint">Count of operations (HK algorithm in cycle) for one point in diagram</param>
+        public void DrawExperimentData(Canvas canvas, int operationsPerPoint)
         {
             this.DrawCoordinates(canvas);
 
@@ -102,8 +100,6 @@ namespace WpfCluster
             PointCollection points = new PointCollection();
             Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
             int currentBrush = 0;
-
-            // TODO: input scale step, remove hardcode
 
             double probabilityStep = 0.05;
             double startProbability = 0.4;
@@ -115,7 +111,7 @@ namespace WpfCluster
                 for (double prob = startProbability; prob <= endProbability; prob += probabilityStep)
                 {
                     int countPercolationClusters = 0;
-                    for (int j = 0; j < this.operationsPerPoint; j++)
+                    for (int j = 0; j < operationsPerPoint; j++)
                     {
                         findClusterObj = new FindClustersAlgorithm(gridSize, prob);
                         findClusterObj.HoshenKopelmanAlgorithm(true);
@@ -128,7 +124,7 @@ namespace WpfCluster
                     double yPixelStepSize = (canvas.Height - 2 * margin) / 100;
 
                     double x = margin + ((prob - startProbability) / probabilityStep) * xPixelStepSize;
-                    double y = canvas.Height - margin - yPixelStepSize * (((double)countPercolationClusters / this.operationsPerPoint) * 100);
+                    double y = canvas.Height - margin - yPixelStepSize * (((double)countPercolationClusters / operationsPerPoint) * 100);
 
                     points.Add(new Point(x, y));
                 }
