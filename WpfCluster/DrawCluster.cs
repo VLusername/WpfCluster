@@ -69,7 +69,7 @@ namespace WpfCluster
                         }
                         else 
                         {
-                            rectBrush = new SolidColorBrush(Colors.White);
+                            rectBrush = new SolidColorBrush(Colors.WhiteSmoke);
                         }
 
                     cellRect = new Rectangle();
@@ -94,9 +94,12 @@ namespace WpfCluster
                     }          
                 }
 
-            percolationClustersText += "Per. clusers:";
-            foreach (var item in percolationClusters)
-                percolationClustersText += " #" + item.ToString();
+            if (showText)
+            {
+                percolationClustersText += "Per. clusers:";
+                foreach (var item in percolationClusters)
+                    percolationClustersText += " #" + item.ToString();
+            }
         }
 
         /// <summary>

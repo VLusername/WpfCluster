@@ -203,12 +203,12 @@ namespace WpfCluster
                         if (this.grid3D[i, j, 0] != 0)
                             frontSideClusters3D.Add(this.grid3D[i, j, 0]);
 
-            // check back front for labels from foundClusters3D list.
-            // if such clusters exists - percolation effect has been occurred!
+            // check back front for labels from frontSideClusters3D list.
+            // if such clusters exist - percolation effect has been occurred!
             for (int i = 0; i < this.grid3D.GetLength(0); i++)
                 for (int j = 0; j < this.grid3D.GetLength(1); j++)
                     if (this.grid3D[i, j, this.grid3D.GetLength(2) - 1] != 0 && frontSideClusters3D.Contains(this.grid3D[i, j, this.grid3D.GetLength(2) - 1]) && !this.foundClusters3D.Contains(this.grid3D[i, j, this.grid3D.GetLength(2) - 1]))
-                        this.foundClusters3D.Add(this.grid3D[i, j, 0]);
+                        this.foundClusters3D.Add(this.grid3D[i, j, this.grid3D.GetLength(2) - 1]);
         }
     }
 }

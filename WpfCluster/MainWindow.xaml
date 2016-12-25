@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WpfCluster.MainWindow"
         Title="" Height="600" Width="800" FontFamily="Jing Jing" Background="#FFC7E3FF" MouseWheel="Window_MouseWheel" Icon="icon.ico" MinWidth="650" MinHeight="650" KeyDown="Window_KeyDown">
     <Grid x:Name="mainGrid">
-        <TabControl Margin="10" Background="#FFB9FFD9" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged" FontSize="14" FontWeight="ExtraBold">
+        <TabControl Margin="10" Background="White" HorizontalContentAlignment="Center" SelectionChanged="TabControl_SelectionChanged" FontSize="14" FontWeight="ExtraBold">
             <TabItem x:Name="firstTab" Header="Clusters">
                 <Grid x:Name="firstPageGrid" Margin="10">
                     <Grid.RowDefinitions>
@@ -53,7 +53,9 @@
                                 <Button x:Name="drawCubeButton" Content="Draw" Margin="5" Click="drawCubeButton_Click"/>
                                 <Button x:Name="fillCubeButton" Content="Fill" Margin="5" Click="fillCubeButton_Click"/>
                                 <Button x:Name="clearCubeButton" Content="Clear" Margin="5" Click="clearCubeButton_Click"/>
-                            </StackPanel>
+                                <StackPanel x:Name="foundClustersLabel3D" Orientation="Horizontal">
+                                </StackPanel>
+                            </StackPanel>                           
                         </WrapPanel>
                     </DockPanel>
                     <Viewbox Grid.Row="1" Grid.Column="0">
@@ -100,15 +102,40 @@
             <TabItem x:Name="secondTab" Header="Diagram">
                 <Grid x:Name="secondPageGrid" Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.3*"/>
-                        <RowDefinition Height="1.55*"/>
-                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.4*"/>
+                        <RowDefinition Height="1.6*"/>
                     </Grid.RowDefinitions>
                     <DockPanel Grid.Row="0" HorizontalAlignment="Center">
                         <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="operationCount" Text="100" MinWidth="35" MaxHeight="23" MaxLength="3" FontFamily="Jing Jing" FontWeight="Normal" FontSize="12"/>
-                                <Label Content="Operation count for one point" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label Content="Grid 1: " Foreground="Red" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                                <ComboBox Width="60" x:Name="grid1" FontSize="16" FontFamily="Source Sans Pro">
+                                    <ComboBoxItem Content="20" IsSelected="True"/>
+                                    <ComboBoxItem Content="50"/>
+                                    <ComboBoxItem Content="100"/>
+                                    <ComboBoxItem Content="150"/>
+                                    <ComboBoxItem Content="200"/>
+                                </ComboBox>
+                                <Label Content="Grid 2: " Foreground="Green" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                                <ComboBox Width="60" x:Name="grid2" FontSize="16" FontFamily="Source Sans Pro">
+                                    <ComboBoxItem Content="20"/>
+                                    <ComboBoxItem Content="50" IsSelected="True"/>
+                                    <ComboBoxItem Content="100"/>
+                                    <ComboBoxItem Content="150"/>
+                                    <ComboBoxItem Content="200"/>
+                                </ComboBox>
+                                <Label Content="Grid 3: " Foreground="Blue" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                                <ComboBox Width="60" x:Name="grid3" FontSize="16" FontFamily="Source Sans Pro">
+                                    <ComboBoxItem Content="20"/>
+                                    <ComboBoxItem Content="50"/>
+                                    <ComboBoxItem Content="100" IsSelected="True"/>
+                                    <ComboBoxItem Content="150"/>
+                                    <ComboBoxItem Content="200"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBox x:Name="operationCount" Text="100" MinWidth="35" MaxHeight="23" MaxLength="3" FontSize="16" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
+                                <Label Content="Operations count for one point" FontWeight="ExtraBold" FontFamily="Source Sans Pro"/>
                             </StackPanel>
                             <StackPanel>
                                 <Button x:Name="drawGraphic" Content="Draw" Margin="4" Click="drawGraphic_Click" HorizontalAlignment="Center"/>
@@ -118,16 +145,7 @@
                     <Viewbox Grid.Row="1">
                         <Canvas x:Name="graphicCanvasField" Width="500" Height="500">
                         </Canvas>
-                    </Viewbox>
-                    <DockPanel Grid.Row="2" HorizontalAlignment="Center">
-                        <WrapPanel HorizontalAlignment="Left" Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Grid size: 50" Foreground="Red"/>
-                                <Label Content="Grid size: 100" Foreground="Green"/>
-                                <Label Content="Grid size: 150" Foreground="Blue"/>
-                            </StackPanel>
-                        </WrapPanel>
-                    </DockPanel>
+                    </Viewbox>                  
                 </Grid>
             </TabItem>
         </TabControl>

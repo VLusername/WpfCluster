@@ -112,6 +112,7 @@ namespace WpfCluster
                 fillCubeButton.IsEnabled = true;
                 clearCubeButton.IsEnabled = true;
                 cubeModel.Children.Clear();
+                foundClustersLabel3D.Children.Clear();
 
                 drawClusterObj3D = new DrawCluster3D(cubeSize, cubeProbability);
                 drawClusterObj3D.DrawCube(viewportField, mainCamera, 5, ref cubeModel);
@@ -120,7 +121,8 @@ namespace WpfCluster
 
         private void fillCubeButton_Click(object sender, RoutedEventArgs e)
         {
-            drawClusterObj3D.FillCube(viewportField, mainCamera, 5, ref cubeModel);
+            foundClustersLabel3D.Children.Clear();
+            drawClusterObj3D.FillCube(viewportField, mainCamera, 5, ref cubeModel, ref foundClustersLabel3D);
         }
 
         private void clearCubeButton_Click(object sender, RoutedEventArgs e)
@@ -128,6 +130,7 @@ namespace WpfCluster
             fillCubeButton.IsEnabled = false;
             clearCubeButton.IsEnabled = false;
             cubeModel.Children.Clear();
+            foundClustersLabel3D.Children.Clear();
             cubeModel.Content = null;
         }
 
@@ -153,7 +156,23 @@ namespace WpfCluster
             }
             else
             {
-                drawStatObj.DrawExperimentData(graphicCanvasField, operationCount);
+                List<int> gridSizes = new List<int>();
+                ComboBoxItem typeItem;
+                string selectedValue;
+
+                typeItem = (ComboBoxItem)grid1.SelectedItem;
+                selectedValue = typeItem.Content.ToString();
+                gridSizes.Add(Convert.ToInt32(selectedValue));
+
+                typeItem = (ComboBoxItem)grid2.SelectedItem;
+                selectedValue = typeItem.Content.ToString();
+                gridSizes.Add(Convert.ToInt32(selectedValue));
+
+                typeItem = (ComboBoxItem)grid3.SelectedItem;
+                selectedValue = typeItem.Content.ToString();
+                gridSizes.Add(Convert.ToInt32(selectedValue));
+
+                drawStatObj.DrawExperimentData(graphicCanvasField, operationCount, gridSizes);
             }         
         }
 

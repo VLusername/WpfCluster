@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WpfCluster.CubeBuilder">
+    <Position X="6.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAACAAAAAAAAAAAEABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CubeBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfCluster.DrawCluster">
+    <Position X="3.25" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawCluster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfCluster.DrawCluster3D">
+    <Position X="0.5" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAIAAAAAAAAAAAACAAAAAAAAAAAAAAAACAAAgAA=</HashCode>
+      <FileName>DrawCluster3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfCluster.DrawStatistics">
+    <Position X="9" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAQAAAQAAAAAAAAAAAQAAAAAIAAAAAAAgAAA=</HashCode>
+      <FileName>DrawStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfCluster.FindClustersAlgorithm">
+    <Position X="3.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAIAAIBABAAAAAABAAQAAAAAAACABABAQAQAAA=</HashCode>
+      <FileName>FindClustersAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfCluster.FindClustersAlgorithm3D">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAICAYAAAAAIAAAAAABAAAAAAAAAACAAAAAQABAAA=</HashCode>
+      <FileName>FindClustersAlgorithm3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

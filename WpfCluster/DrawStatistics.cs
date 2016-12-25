@@ -92,7 +92,8 @@ namespace WpfCluster
         /// </summary>
         /// <param name="canvas">Canvas object for drawing</param>
         /// <param name="operationsPerPoint">Count of operations (HK algorithm in cycle) for one point in diagram</param>
-        public void DrawExperimentData(Canvas canvas, int operationsPerPoint)
+        /// <param name="gridSizes">Three sizes of grid for experiment measure</param>
+        public void DrawExperimentData(Canvas canvas, int operationsPerPoint, List<int> gridSizes)
         {
             this.DrawCoordinates(canvas);
 
@@ -105,7 +106,7 @@ namespace WpfCluster
             double startProbability = 0.4;
             double endProbability = startProbability + 0.05 * stepsCount;
 
-            for (int gridSize = 50; gridSize <= 150; gridSize += 50)
+            foreach (int gridSize in gridSizes)
             {
                 points = new PointCollection();
                 for (double prob = startProbability; prob <= endProbability; prob += probabilityStep)
@@ -148,7 +149,7 @@ namespace WpfCluster
         private TextBlock DrawTextMark(string text, double x, double y)
         {
             TextBlock textBlock = new TextBlock();
-            textBlock.FontSize = 18;
+            textBlock.FontSize = 16;
             textBlock.Text = text;
             Canvas.SetLeft(textBlock, x);
             Canvas.SetTop(textBlock, y);

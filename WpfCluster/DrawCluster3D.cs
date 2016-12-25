@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
 
 namespace WpfCluster
 {
@@ -75,7 +76,8 @@ namespace WpfCluster
         /// <param name="mainCamera">PerspectiveCamera object for setting camera coordinates</param>
         /// <param name="cubeCellSize">Size of ONE cell if cube</param>
         /// <param name="cubeModel3D">ModelVisual3D object for drawing cube</param>
-        public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeCellSize, ref ModelVisual3D cubeModel3D)
+        /// <param name="panel">StackPanel object for drawing percolation clusters colors</param>
+        public void FillCube(Viewport3D viewportField, PerspectiveCamera mainCamera, int cubeCellSize, ref ModelVisual3D cubeModel3D, ref StackPanel panel)
         {           
             cubeModel3D.Children.Clear();
 
@@ -127,6 +129,18 @@ namespace WpfCluster
                         cubeBuilder.CreateCubeCell(ref cubeModelGroup, xCenter, -yCenter, zCenter, CubeColor, opacity);  
                     }
             cubeModel3D.Content = cubeModelGroup;
+
+            foreach (int cluster in foundClusters3D)
+            {
+                SolidColorBrush rectBrush = new SolidColorBrush(clusterColors[cluster]);
+                Rectangle rect = new Rectangle();
+                rect.Width = 25;
+                rect.Height = 25;
+                rect.Fill = rectBrush;
+                rect.Margin = new System.Windows.Thickness(5);
+                rect.Opacity = 0.7;
+                panel.Children.Add(rect);
+            }
 
             this.SetLight(viewportField);
             this.SetCamera(mainCamera, cubeCellSize);
